@@ -48,6 +48,8 @@
     self.controlTableView = tableview;
     
     
+    
+    
     [self initLeftview:self.mainView];
 }
 
