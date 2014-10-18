@@ -190,10 +190,6 @@
 		A74D140919EFC23A008234EB /* 0_DCLogin */ = {
 			isa = PBXGroup;
 			children = (
-				A74D140D19EFC451008234EB /* DCMainViewController.h */,
-				A74D140E19EFC451008234EB /* DCMainViewController.m */,
-				A74D141119EFE8A6008234EB /* DCMainModel.h */,
-				A74D141219EFE8A6008234EB /* DCMainModel.m */,
 			);
 			name = 0_DCLogin;
 			sourceTree = "<group>";
@@ -201,6 +197,10 @@
 		A74D140C19EFC24D008234EB /* 1_DCMainViewController */ = {
 			isa = PBXGroup;
 			children = (
+				A74D140D19EFC451008234EB /* DCMainViewController.h */,
+				A74D140E19EFC451008234EB /* DCMainViewController.m */,
+				A74D141119EFE8A6008234EB /* DCMainModel.h */,
+				A74D141219EFE8A6008234EB /* DCMainModel.m */,
 			);
 			name = 1_DCMainViewController;
 			sourceTree = "<group>";
@@ -496,6 +496,7 @@
 				A74D13FB19EFBE8A008234EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A74D13FC19EFBE8A008234EB /* Build configuration list for PBXNativeTarget "DoctorClientTests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +505,7 @@
 				A74D13FE19EFBE8A008234EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
