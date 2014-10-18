@@ -12,5 +12,4 @@
 
 @property (nonatomic, strong) UIViewController *control;
 @property (nonatomic, strong) NSString *title;
-
 @end
