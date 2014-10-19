@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface PCMainModel : NSObject
+@interface PCMainModel : UINavigationController
 
 @property (nonatomic,copy) NSString *title;
 @property (nonatomic,strong) UIViewController *control;

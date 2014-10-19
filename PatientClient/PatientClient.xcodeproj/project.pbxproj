@@ -17,6 +17,11 @@
 		6EB34A4E19F20633002C5F8D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6EB34A4D19F20633002C5F8D /* Images.xcassets */; };
 		6EB34A5119F20633002C5F8D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EB34A4F19F20633002C5F8D /* LaunchScreen.xib */; };
 		6EB34A5D19F20633002C5F8D /* PatientClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB34A5C19F20633002C5F8D /* PatientClientTests.m */; };
+		6EB4E8F119F3AA2200262FBF /* navigationbar_pop.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EB4E8ED19F3AA2200262FBF /* navigationbar_pop.png */; };
+		6EB4E8F219F3AA2200262FBF /* navigationbar_pop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EB4E8EE19F3AA2200262FBF /* navigationbar_pop@2x.png */; };
+		6EB4E8F319F3AA2200262FBF /* navigationbar_pop_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EB4E8EF19F3AA2200262FBF /* navigationbar_pop_highlighted.png */; };
+		6EB4E8F419F3AA2200262FBF /* navigationbar_pop_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EB4E8F019F3AA2200262FBF /* navigationbar_pop_highlighted@2x.png */; };
+		6EB4E8F819F3AB0300262FBF /* HomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB4E8F719F3AB0300262FBF /* HomeController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +54,12 @@
 		6EB34A5619F20633002C5F8D /* PatientClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PatientClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB34A5B19F20633002C5F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6EB34A5C19F20633002C5F8D /* PatientClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PatientClientTests.m; sourceTree = "<group>"; };
+		6EB4E8ED19F3AA2200262FBF /* navigationbar_pop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_pop.png; sourceTree = "<group>"; };
+		6EB4E8EE19F3AA2200262FBF /* navigationbar_pop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_pop@2x.png"; sourceTree = "<group>"; };
+		6EB4E8EF19F3AA2200262FBF /* navigationbar_pop_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_pop_highlighted.png; sourceTree = "<group>"; };
+		6EB4E8F019F3AA2200262FBF /* navigationbar_pop_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_pop_highlighted@2x.png"; sourceTree = "<group>"; };
+		6EB4E8F619F3AB0300262FBF /* HomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeController.h; sourceTree = "<group>"; };
+		6EB4E8F719F3AB0300262FBF /* HomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +83,6 @@
 		6E41030A19F20CC7002F6ECE /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				6E7A6C4F19F2B1AA00D0F4D5 /* DrawerViewController.h */,
-				6E7A6C5019F2B1AA00D0F4D5 /* DrawerViewController.m */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -81,6 +90,8 @@
 		6E41030B19F20CD3002F6ECE /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				6E7A6C4F19F2B1AA00D0F4D5 /* DrawerViewController.h */,
+				6E7A6C5019F2B1AA00D0F4D5 /* DrawerViewController.m */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -111,6 +122,7 @@
 		6E41030F19F20D13002F6ECE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				6EB4E8F519F3AA3D00262FBF /* 2_HomeController */,
 				6E41031119F20D2B002F6ECE /* 1_PCMainViewController */,
 				6E41031019F20D20002F6ECE /* 0_PCLogin */,
 			);
@@ -172,6 +184,7 @@
 		6EB34A4019F20633002C5F8D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6EB4E8EB19F3AA2200262FBF /* Resource */,
 				6EB34A4119F20633002C5F8D /* Info.plist */,
 				6EB34A4219F20633002C5F8D /* main.m */,
 			);
@@ -204,6 +217,34 @@
 				6E41030C19F20CE4002F6ECE /* Data */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		6EB4E8EB19F3AA2200262FBF /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				6EB4E8EC19F3AA2200262FBF /* Home */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		6EB4E8EC19F3AA2200262FBF /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				6EB4E8ED19F3AA2200262FBF /* navigationbar_pop.png */,
+				6EB4E8EE19F3AA2200262FBF /* navigationbar_pop@2x.png */,
+				6EB4E8EF19F3AA2200262FBF /* navigationbar_pop_highlighted.png */,
+				6EB4E8F019F3AA2200262FBF /* navigationbar_pop_highlighted@2x.png */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		6EB4E8F519F3AA3D00262FBF /* 2_HomeController */ = {
+			isa = PBXGroup;
+			children = (
+				6EB4E8F619F3AB0300262FBF /* HomeController.h */,
+				6EB4E8F719F3AB0300262FBF /* HomeController.m */,
+			);
+			name = 2_HomeController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,8 +328,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EB34A4C19F20633002C5F8D /* Main.storyboard in Resources */,
+				6EB4E8F219F3AA2200262FBF /* navigationbar_pop@2x.png in Resources */,
 				6EB34A5119F20633002C5F8D /* LaunchScreen.xib in Resources */,
 				6EB34A4E19F20633002C5F8D /* Images.xcassets in Resources */,
+				6EB4E8F419F3AA2200262FBF /* navigationbar_pop_highlighted@2x.png in Resources */,
+				6EB4E8F119F3AA2200262FBF /* navigationbar_pop.png in Resources */,
+				6EB4E8F319F3AA2200262FBF /* navigationbar_pop_highlighted.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EB34A4919F20633002C5F8D /* ViewController.m in Sources */,
+				6EB4E8F819F3AB0300262FBF /* HomeController.m in Sources */,
 				6E41031719F21050002F6ECE /* PCMainController.m in Sources */,
 				6EB34A4619F20633002C5F8D /* AppDelegate.m in Sources */,
 				6E7A6C5119F2B1AA00D0F4D5 /* DrawerViewController.m in Sources */,

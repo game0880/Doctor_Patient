@@ -64,6 +64,7 @@
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panRecognized:)];
         [self.currentView addGestureRecognizer:pan];
         self.pan = pan;
+        
     }
     return  self;
 }
