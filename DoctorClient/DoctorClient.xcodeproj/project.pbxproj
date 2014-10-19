@@ -166,7 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				A74D140419EFC0E3008234EB /* CoreUI */,
-				A74D140519EFC0EB008234EB /* ViewControlles */,
+				A74D140519EFC0EB008234EB /* ViewController */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -178,13 +178,13 @@
 			name = CoreUI;
 			sourceTree = "<group>";
 		};
-		A74D140519EFC0EB008234EB /* ViewControlles */ = {
+		A74D140519EFC0EB008234EB /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
 				A74D140919EFC23A008234EB /* 0_DCLogin */,
 				A74D140C19EFC24D008234EB /* 1_DCMainViewController */,
 			);
-			name = ViewControlles;
+			name = ViewController;
 			sourceTree = "<group>";
 		};
 		A74D140919EFC23A008234EB /* 0_DCLogin */ = {

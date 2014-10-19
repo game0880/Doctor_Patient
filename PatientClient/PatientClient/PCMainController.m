@@ -8,7 +8,7 @@
 
 #import "PCMainController.h"
 #import "PCMainModel.h"
-#import "ViewController.h"
+#import "HomeController.h"
 
 @interface PCMainController () <UITableViewDataSource,UITableViewDelegate>
 
@@ -22,11 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.view.backgroundColor = [UIColor redColor];
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(160, 160, 160, 60)];
-//    label.text = @"pcmaincontroller";
-//    label.numberOfLines = 0;
-//    [self.view addSubview:label];
+    
 }
 
 + (instancetype)shareMainViewController
@@ -75,10 +71,10 @@
 
 - (void)addController
 {
-    ViewController *viewController = [[ViewController alloc] init];
+    HomeController *viewController = [[HomeController alloc] init];
     
     PCMainModel *home = [[PCMainModel alloc] init];
-    home.control = viewController;
+    home.control = [[UINavigationController alloc] initWithRootViewController:viewController];
     home.title = @"Home";
     
     UIViewController *viewController2 = [[UIViewController alloc] init];
@@ -102,7 +98,7 @@
     signIn.control = viewController4;
     signIn.title = @"Sign In";
     
-    [self initCurrentView:viewController.view];
+    [self initCurrentView:home.control.view];
     [self.controlArray addObject:home];
     [self.controlArray addObject:waitingRoom];
     [self.controlArray addObject:labelOrders];
@@ -121,6 +117,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentical];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentical];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     PCMainModel *model = _controlArray[indexPath.row];
     [cell setBackgroundColor:[UIColor clearColor]];
@@ -134,6 +131,7 @@
 {
     PCMainModel *model = _controlArray[indexPath.row];
     [self didOpenViewController:model.control];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 /*
 #pragma mark - Navigation

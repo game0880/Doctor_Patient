@@ -11,6 +11,7 @@
 #define kRightWidth 150
 
 @interface DrawerViewController : UIViewController
+
 @property (nonatomic, strong) UIView *currentView;
 //@property (nonatomic, strong) UIView *rightView;
 @property (nonatomic, strong) UIView *leftView;
