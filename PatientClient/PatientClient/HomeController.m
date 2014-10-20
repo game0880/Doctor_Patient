@@ -14,11 +14,11 @@
 #define kButtonHeight 50
 
 @interface HomeController () <UITableViewDataSource,UITableViewDelegate>
-{
-    UILabel *_titleLabel;
-    UITableView *_msgTableView;
-    NSMutableArray *_msgArray;
-}
+
+@property (nonatomic,strong) UILabel *titleLabel;
+@property (nonatomic,strong) UITableView *msgTableView;
+@property (nonatomic,strong) NSMutableArray *msgArray;
+
 @end
 
 @implementation HomeController
@@ -70,13 +70,13 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     // 设置消息框标题
-    _titleLabel = [[UILabel alloc] init];
+    self.titleLabel = [[UILabel alloc] init];
     _titleLabel.text = @"NEWSFLASH";
-    [_titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
+    [self.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
     CGRect windowBounds = [UIScreen mainScreen].bounds;
     _titleLabel.frame = CGRectMake(0, windowBounds.size.height * 0.13, windowBounds.size.width, kLabelHeight);
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:_titleLabel];
+    [self.view addSubview:self.titleLabel];
     
     // 创建假数据
     _msgArray = [NSMutableArray array];

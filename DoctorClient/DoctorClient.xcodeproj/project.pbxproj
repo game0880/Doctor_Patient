@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1376410219F38AD8003B647D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1376410119F38AD8003B647D /* LoginViewController.m */; };
+		1376410519F38AEE003B647D /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1376410419F38AEE003B647D /* RegisterViewController.m */; };
 		A70ACC8019F348B7009BAC9A /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A70ACC6E19F348B7009BAC9A /* AFHTTPClient.m */; };
 		A70ACC8119F348B7009BAC9A /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A70ACC7019F348B7009BAC9A /* AFHTTPRequestOperation.m */; };
 		A70ACC8219F348B7009BAC9A /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A70ACC7219F348B7009BAC9A /* AFImageRequestOperation.m */; };
@@ -41,6 +43,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1376410019F38AD8003B647D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		1376410119F38AD8003B647D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		1376410319F38AEE003B647D /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		1376410419F38AEE003B647D /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		A70ACC6D19F348B7009BAC9A /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		A70ACC6E19F348B7009BAC9A /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		A70ACC6F19F348B7009BAC9A /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -269,6 +275,10 @@
 		A74D140919EFC23A008234EB /* 0_DCLogin */ = {
 			isa = PBXGroup;
 			children = (
+				1376410019F38AD8003B647D /* LoginViewController.h */,
+				1376410119F38AD8003B647D /* LoginViewController.m */,
+				1376410319F38AEE003B647D /* RegisterViewController.h */,
+				1376410419F38AEE003B647D /* RegisterViewController.m */,
 			);
 			name = 0_DCLogin;
 			sourceTree = "<group>";
@@ -399,12 +409,14 @@
 				A70ACC8519F348B7009BAC9A /* AFPropertyListRequestOperation.m in Sources */,
 				A74D140819EFC1F4008234EB /* DrawerViewController.m in Sources */,
 				A74D141319EFE8A6008234EB /* DCMainModel.m in Sources */,
+				1376410219F38AD8003B647D /* LoginViewController.m in Sources */,
 				A70ACC8719F348B7009BAC9A /* AFXMLRequestOperation.m in Sources */,
 				A7546CD519F50EFD0079203F /* DCSqlite.m in Sources */,
 				A70ACC8B19F34953009BAC9A /* DCAPIClient.m in Sources */,
 				A70ACC8419F348B7009BAC9A /* AFNetworkActivityIndicatorManager.m in Sources */,
 				A70ACC8119F348B7009BAC9A /* AFHTTPRequestOperation.m in Sources */,
 				A74D13DF19EFBE8A008234EB /* AppDelegate.m in Sources */,
+				1376410519F38AEE003B647D /* RegisterViewController.m in Sources */,
 				A70ACC8219F348B7009BAC9A /* AFImageRequestOperation.m in Sources */,
 				A70ACC8019F348B7009BAC9A /* AFHTTPClient.m in Sources */,
 				A70ACC8319F348B7009BAC9A /* AFJSONRequestOperation.m in Sources */,
