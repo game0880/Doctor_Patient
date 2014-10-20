@@ -11,4 +11,6 @@
 
 @interface HomeController :UIViewController
 
+@property (nonatomic, strong) UIButton *leftItem;
+
 @end
