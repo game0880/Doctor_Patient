@@ -26,6 +26,8 @@
 		A74D140819EFC1F4008234EB /* DrawerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A74D140719EFC1F4008234EB /* DrawerViewController.m */; };
 		A74D140F19EFC451008234EB /* DCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A74D140E19EFC451008234EB /* DCMainViewController.m */; };
 		A74D141319EFE8A6008234EB /* DCMainModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A74D141219EFE8A6008234EB /* DCMainModel.m */; };
+		A7546CD119F50E150079203F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7546CD019F50E150079203F /* libsqlite3.dylib */; };
+		A7546CD519F50EFD0079203F /* DCSqlite.m in Sources */ = {isa = PBXBuildFile; fileRef = A7546CD419F50EFD0079203F /* DCSqlite.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +82,9 @@
 		A74D141019EFC873008234EB /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		A74D141119EFE8A6008234EB /* DCMainModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCMainModel.h; sourceTree = "<group>"; };
 		A74D141219EFE8A6008234EB /* DCMainModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCMainModel.m; sourceTree = "<group>"; };
+		A7546CD019F50E150079203F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		A7546CD319F50EFD0079203F /* DCSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCSqlite.h; sourceTree = "<group>"; };
+		A7546CD419F50EFD0079203F /* DCSqlite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCSqlite.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7546CD119F50E150079203F /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +170,7 @@
 				A74D13FF19EFBF06008234EB /* Class */,
 				A74D13E619EFBE8A008234EB /* Images.xcassets */,
 				A74D13D919EFBE8A008234EB /* Supporting Files */,
+				A7546CD219F50E440079203F /* Frameworks */,
 			);
 			path = DoctorClient;
 			sourceTree = "<group>";
@@ -228,6 +235,8 @@
 		A74D140219EFC0A2008234EB /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				A7546CD319F50EFD0079203F /* DCSqlite.h */,
+				A7546CD419F50EFD0079203F /* DCSqlite.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -273,6 +282,15 @@
 				A74D141219EFE8A6008234EB /* DCMainModel.m */,
 			);
 			name = 1_DCMainViewController;
+			sourceTree = "<group>";
+		};
+		A7546CD219F50E440079203F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A7546CD019F50E150079203F /* libsqlite3.dylib */,
+			);
+			name = Frameworks;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -382,6 +400,7 @@
 				A74D140819EFC1F4008234EB /* DrawerViewController.m in Sources */,
 				A74D141319EFE8A6008234EB /* DCMainModel.m in Sources */,
 				A70ACC8719F348B7009BAC9A /* AFXMLRequestOperation.m in Sources */,
+				A7546CD519F50EFD0079203F /* DCSqlite.m in Sources */,
 				A70ACC8B19F34953009BAC9A /* DCAPIClient.m in Sources */,
 				A70ACC8419F348B7009BAC9A /* AFNetworkActivityIndicatorManager.m in Sources */,
 				A70ACC8119F348B7009BAC9A /* AFHTTPRequestOperation.m in Sources */,
