@@ -69,13 +69,21 @@
     [self initLeftview:_mainView];
 }
 
+
 - (void)addController
 {
     HomeController *viewController = [[HomeController alloc] init];
     
+    
+    [viewController.leftItem addTarget:self
+                                action:@selector(leftItemClick:)
+                      forControlEvents:UIControlEventTouchUpInside];
+    
     PCMainModel *home = [[PCMainModel alloc] init];
+    
     home.control = [[UINavigationController alloc] initWithRootViewController:viewController];
     home.title = @"Home";
+    
     
     UIViewController *viewController2 = [[UIViewController alloc] init];
     viewController2.view.backgroundColor = [UIColor blueColor];

@@ -122,9 +122,9 @@
 		6E41030F19F20D13002F6ECE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				6EB4E8F519F3AA3D00262FBF /* 2_HomeController */,
-				6E41031119F20D2B002F6ECE /* 1_PCMainViewController */,
 				6E41031019F20D20002F6ECE /* 0_PCLogin */,
+				6E41031119F20D2B002F6ECE /* 1_PCMainViewController */,
+				6EB4E8F519F3AA3D00262FBF /* 2_HomeController */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";

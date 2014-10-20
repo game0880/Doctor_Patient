@@ -23,14 +23,29 @@
 
 @implementation HomeController
 
+
+- (id)init{
+    self = [super init];
+    if (self) {
+        [self initProperty];  
+    }
+    
+    return self;
+}
+
+- (void)addData{
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addData];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // 设置基本属性
-    [self initProperty];
+//    [self initProperty];
     
 }
 
@@ -46,8 +61,8 @@
     UIImage *image2 = [UIImage imageNamed:@"navigationbar_pop_highlighted@2x.png"];
     [btn setBackgroundImage:image2 forState:UIControlStateHighlighted];
     btn.bounds = (CGRect){CGPointZero,image.size};
-    
-    [btn addTarget:self action:@selector(homeLeftButton) forControlEvents:UIControlEventTouchUpInside];
+//    [btn addTarget:self action:@selector(homeLeftButton) forControlEvents:UIControlEventTouchUpInside];
+    self.leftItem = btn;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
     
     // 右边按钮
