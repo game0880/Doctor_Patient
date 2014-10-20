@@ -9,6 +9,7 @@
 #import "PCMainController.h"
 #import "PCMainModel.h"
 #import "HomeController.h"
+#import "PersonCenterController.h"
 
 @interface PCMainController () <UITableViewDataSource,UITableViewDelegate>
 
@@ -59,7 +60,7 @@
     [_mainView setBackgroundColor:[UIColor grayColor]];
     
     UITableView *tableView = [[UITableView alloc] init];
-    tableView.frame = CGRectMake(20, 50, 150, 400);
+    tableView.frame = CGRectMake(10, 50, 205, 400);
     [tableView setBackgroundColor:[UIColor clearColor]];
     self.controlTableView = tableView;
     tableView.delegate = self;
@@ -73,43 +74,46 @@
 - (void)addController
 {
     HomeController *viewController = [[HomeController alloc] init];
-    
-    
     [viewController.leftItem addTarget:self
                                 action:@selector(leftItemClick:)
                       forControlEvents:UIControlEventTouchUpInside];
     
     PCMainModel *home = [[PCMainModel alloc] init];
-    
     home.control = [[UINavigationController alloc] initWithRootViewController:viewController];
     home.title = @"Home";
     
     
     UIViewController *viewController2 = [[UIViewController alloc] init];
     viewController2.view.backgroundColor = [UIColor blueColor];
-    
-    PCMainModel *waitingRoom = [[PCMainModel alloc] init];
-    waitingRoom.control = viewController2;
-    waitingRoom.title = @"WaitingRoom";
+    PCMainModel *startNewChat = [[PCMainModel alloc] init];
+    startNewChat.control = viewController2;
+    startNewChat.title = @"Start New Chat";
     
     UIViewController *viewController3 = [[UIViewController alloc] init];
     viewController3.view.backgroundColor = [UIColor whiteColor];
-
-    PCMainModel *labelOrders = [[PCMainModel alloc] init];
-    labelOrders.control = viewController3;
-    labelOrders.title = @"Label Orders";
+    PCMainModel *resumeChat = [[PCMainModel alloc] init];
+    resumeChat.control = viewController3;
+    resumeChat.title = @"Resume Previous Chat";
     
-    UIViewController *viewController4 = [[UIViewController alloc] init];
-    viewController4.view.backgroundColor = [UIColor greenColor];
-
+    PersonCenterController *viewController4 = [[PersonCenterController alloc] init];
+    PCMainModel *personCenter = [[PCMainModel alloc] init];
+    [viewController4.leftItem addTarget:self
+                                action:@selector(leftItemClick:)
+                      forControlEvents:UIControlEventTouchUpInside];
+    personCenter.control = [[UINavigationController alloc] initWithRootViewController:viewController4];
+    personCenter.title = @"Person Center";
+    
+    UIViewController *viewController5 = [[UIViewController alloc] init];
+    viewController5.view.backgroundColor = [UIColor greenColor];
     PCMainModel *signIn = [[PCMainModel alloc] init];
-    signIn.control = viewController4;
+    signIn.control = viewController5;
     signIn.title = @"Sign In";
     
     [self initCurrentView:home.control.view];
     [self.controlArray addObject:home];
-    [self.controlArray addObject:waitingRoom];
-    [self.controlArray addObject:labelOrders];
+    [self.controlArray addObject:startNewChat];
+    [self.controlArray addObject:resumeChat];
+    [self.controlArray addObject:personCenter];
     [self.controlArray addObject:signIn];
     
 }
@@ -129,6 +133,7 @@
     }
     PCMainModel *model = _controlArray[indexPath.row];
     [cell setBackgroundColor:[UIColor clearColor]];
+    cell.textLabel.numberOfLines = 0;
     [cell.textLabel setFont:[UIFont systemFontOfSize:17]];
     cell.textLabel.text = model.title;
     
