@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "PCMainController.h"
+#import "AccountTool.h"
+#import "LoginController.h"
 
 @interface AppDelegate ()
 
@@ -20,7 +22,16 @@
     CGRect windowBounds = [UIScreen mainScreen].bounds;
     self.window = [[UIWindow alloc] initWithFrame:windowBounds];
     
-    self.window.rootViewController = [PCMainController shareMainViewController];
+    if ([AccountTool sharedAccountTool].account) {
+        self.window.rootViewController = [PCMainController shareMainViewController];
+    }
+    else
+    {
+        self.window.rootViewController = [[LoginController alloc] init];
+    }
+
+    
+//    self.window.rootViewController = [PCMainController shareMainViewController];
     [self.window makeKeyAndVisible];
     
     return YES;

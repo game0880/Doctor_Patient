@@ -21,7 +21,7 @@
     return user;
 }
 
-- (void)setUserData
+- (void)setUserData:(NSDictionary *)dictionary
 {
     self.userName = @"0001";
     self.userRealName = @"张三";

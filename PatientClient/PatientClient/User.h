@@ -19,7 +19,8 @@
 @property (nonatomic,copy) NSString *photoPath;  //用户头像
 @property (nonatomic,copy) NSString *userTel; //电话
 @property (nonatomic,copy) NSString *userEmail;    //邮箱
+
 + (instancetype)shareUser;
 
-- (void)setUserData;
+- (void)setUserData:(NSDictionary *)dictionary;
 @end

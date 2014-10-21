@@ -10,6 +10,7 @@
 #import "PCMainModel.h"
 #import "HomeController.h"
 #import "PersonCenterController.h"
+#import "LoginController.h"
 
 @interface PCMainController () <UITableViewDataSource,UITableViewDelegate>
 
@@ -103,10 +104,9 @@
     personCenter.control = [[UINavigationController alloc] initWithRootViewController:viewController4];
     personCenter.title = @"Person Center";
     
-    UIViewController *viewController5 = [[UIViewController alloc] init];
-    viewController5.view.backgroundColor = [UIColor greenColor];
+    LoginController *viewController5 = [[LoginController alloc] init];
     PCMainModel *signIn = [[PCMainModel alloc] init];
-    signIn.control = viewController5;
+    signIn.control = [[UINavigationController alloc] initWithRootViewController:viewController5];
     signIn.title = @"Sign In";
     
     [self initCurrentView:home.control.view];

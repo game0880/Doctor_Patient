@@ -7,24 +7,29 @@
 //
 
 #import "PersonCenterController.h"
+#import "UserCell.h"
+
 #define kPropertyCount 9
 #define kCellHeight 40
 #define kGap 13
 
-@interface PersonCenterController () <UIScrollViewDelegate>
+@interface PersonCenterController () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UILabel *userNameLabel;
 @property (nonatomic,strong) UILabel *userRealNameLabel;
-@property (nonatomic,strong) UILabel *ageLabel;
-@property (nonatomic,strong) UILabel *sexLabel;
+@property (nonatomic,strong) UITextField *ageTextField;
+@property (nonatomic,strong) UITextField *sexTextField;
 @property (nonatomic,strong) UILabel *birthPlaceLabel;
 @property (nonatomic,strong) UILabel *userAddressLabel;
-@property (nonatomic,strong) UIImageView *photoPathImageView;  //用户头像
+@property (nonatomic,strong) UIButton *photoPathBtn;  //用户头像
 @property (nonatomic,strong) UILabel *userTelLabel;
 
 @property (nonatomic,strong) UIView *firstView; //包含头像、用户名、性别、年龄
-@property (nonatomic,strong) UIScrollView *scrollView;
+@property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong) NSMutableArray *personArray;
+@property (nonatomic,strong) NSMutableArray *titleArray;
 
+@property (nonatomic,assign) BOOL canEdit;  // 是否能修改状态
 @end
 
 @implementation PersonCenterController
@@ -37,7 +42,7 @@
         
         self.user = [User shareUser];
         // 设置假数据
-        [self.user setUserData];
+        [self.user setUserData:nil];
         
         // 创建用户基本信息界面
         [self initUserUI];
@@ -45,13 +50,39 @@
     return self;
 }
 
-
-
+//- (void)test
+//{
+//    //圆角设置
+//    UIImageView *imageView = [[UIImageView alloc] init];
+//    imageView.layer.cornerRadius
+//    = 8;
+//    
+//    imageView.layer.masksToBounds
+//    = YES;
+//    
+//    //边框宽度及颜色设置
+//    
+//    [imageView.layer
+//     setBorderWidth:2];
+//    
+//    [imageView.layer setBorderColor:[UIColor blueColor]];  //设置边框为蓝色
+//    
+//    
+//    
+//    //自动适应,保持图片宽高比
+//    
+//    imageView.contentMode
+//    = UIViewContentModeScaleAspectFit;
+//}
 
 - (void)initUI
 {
     // 标题
     self.title = @"Person Center";
+    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    // 设置滚动size
+    self.scrollView.contentSize = CGSizeMake(0, 1000);
+    [self.view addSubview:self.scrollView];
     
     // 左边按钮
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -65,24 +96,24 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
     
     // 右边按钮
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Action" style:UIBarButtonItemStylePlain target:self action:@selector(personCenterRightButton)];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(personCenterRightButton)];
+    [self.scrollView setBackgroundColor:[UIColor whiteColor]];
     
     // 确定view
-    UIView *v1 = [[UIView alloc] initWithFrame:CGRectMake(kGap, 0, [UIScreen mainScreen].bounds.size.width - 2 * kGap, 180)];
+    UIView *v1 = [[UIView alloc] initWithFrame:CGRectMake(kGap, 0, [UIScreen mainScreen].bounds.size.width - 2 * kGap, 120)];
 //    [v1 setBackgroundColor:[UIColor redColor]];
     self.firstView = v1;
-    [self.view addSubview:v1];
+    [self.scrollView addSubview:v1];
     
-    // 确定scrollView
-    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(kGap, 180, [UIScreen mainScreen].bounds.size.width - 2 * kGap, [UIScreen mainScreen].bounds.size.height - 180)];
+    // 确定tableView
+    UITableView *tabView = [[UITableView alloc] initWithFrame:CGRectMake(kGap, 100, [UIScreen mainScreen].bounds.size.width - 2 * kGap, [UIScreen mainScreen].bounds.size.height - 120)];
+
+    tabView.delegate = self;
+    tabView.dataSource = self;
+    [self.scrollView addSubview:tabView];
+    self.tableView = tabView;
     
-    // 设置滚动size
-    scroll.contentSize = CGSizeMake(0, kCellHeight * (kPropertyCount - 1) + 2 * kGap);
-//    scroll.backgroundColor = [UIColor grayColor];
-    scroll.delegate = self;
-    [self.view addSubview:scroll];
-    self.scrollView = scroll;
+    self.canEdit = NO;
 
 }
 
@@ -90,14 +121,20 @@
 {
     
     // 设置头像
-    UIImageView *imageview = [[UIImageView alloc] init];
-    imageview.image = [UIImage imageNamed:self.user.photoPath];
-    imageview.frame = CGRectMake(kGap, 90, 80, 80);
-    [self.firstView addSubview:imageview];
-    self.photoPathImageView = imageview;
+    UIButton *imageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    imageBtn.frame = CGRectMake(kGap, kGap, 80, 80);
+    // 设置成圆角
+    [imageBtn.layer setMasksToBounds:YES];
+    [imageBtn.layer setCornerRadius:40];
+    
+    [imageBtn setBackgroundImage:[UIImage imageNamed:self.user.photoPath] forState:UIControlStateNormal];
+    [imageBtn addTarget:self action:@selector(changeIcon) forControlEvents:UIControlEventTouchUpInside];
+    [self.firstView addSubview:imageBtn];
+    
+    self.photoPathBtn = imageBtn;
     
     // 设置用户名
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(120, 90, 100,kCellHeight)];
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(120, kGap, 100,kCellHeight)];
     label1.text = self.user.userName;
     [label1 setFont:[UIFont systemFontOfSize:20]];
     label1.textAlignment = NSTextAlignmentLeft;
@@ -105,94 +142,74 @@
     self.userNameLabel = label1;
     
     // 设置年龄
-    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(160, 130, 40,kCellHeight)];
-    label2.text = [NSString stringWithFormat:@"%d岁",(int)self.user.age];
-    [label2 setFont:[UIFont systemFontOfSize:17]];
-    [label2 setTextColor:[UIColor grayColor]];
-    label2.textAlignment = NSTextAlignmentLeft;
-    [self.firstView addSubview:label2];
-    self.ageLabel = label2;
+    UITextField *f1 = [[UITextField alloc] initWithFrame:CGRectMake(160, kGap + 40, 40,kCellHeight)];
+    f1.text = [NSString stringWithFormat:@"%d岁",(int)self.user.age];
+    [f1 setFont:[UIFont systemFontOfSize:17]];
+    f1.enabled = _canEdit;
+    [self.firstView addSubview:f1];
+    self.ageTextField = f1;
     
     // 设置性别
-    UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(120, 130, 140,kCellHeight)];
-    label3.text = self.user.sex;
-    [label3 setFont:[UIFont systemFontOfSize:17]];
-    [label3 setTextColor:[UIColor grayColor]];
-    label3.textAlignment = NSTextAlignmentLeft;
-    [self.firstView addSubview:label3];
-    self.sexLabel = label3;
+    UITextField *f2 = [[UITextField alloc] initWithFrame:CGRectMake(120, kGap + 40, 80,kCellHeight)];
+    f2.text = self.user.sex;
+    [f2 setFont:[UIFont systemFontOfSize:17]];
+    f2.enabled = _canEdit;
+    [self.firstView addSubview:f2];
+    self.sexTextField = f2;
     
-    // 设置用户名
-    UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(kGap, 20, 140,kCellHeight)];
-    label4.text = [NSString stringWithFormat:@"Name : %@",self.user.userRealName];
-    [label4 setFont:[UIFont systemFontOfSize:20]];
-    [label4 setNumberOfLines:0];
-
-    label4.textAlignment = NSTextAlignmentLeft;
-    [self.scrollView addSubview:label4];
-    self.userRealNameLabel = label4;
-    
-    // 设置籍贯
-    UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(kGap, 60 , [UIScreen mainScreen].bounds.size.width - 2 * kGap,kCellHeight)];
-    label5.text = [NSString stringWithFormat:@"Birth Place : %@",self.user.birthPlace];
-    [label5 setFont:[UIFont systemFontOfSize:20]];
-    [label5 setNumberOfLines:0];
-
-    label5.textAlignment = NSTextAlignmentLeft;
-    [self.scrollView addSubview:label5];
-    self.userRealNameLabel = label5;
-    
-    // 设置地址
-    UILabel *label6 = [[UILabel alloc] initWithFrame:CGRectMake(kGap, 100 , [UIScreen mainScreen].bounds.size.width - 2 * kGap,kCellHeight)];
-    label6.text = [NSString stringWithFormat:@"Address : %@",self.user.userAddress];
-    [label6 setFont:[UIFont systemFontOfSize:20]];
-    [label6 setNumberOfLines:0];
-
-    label6.textAlignment = NSTextAlignmentLeft;
-    [self.scrollView addSubview:label6];
-    self.userRealNameLabel = label6;
-    
-    // 设置电话
-    UILabel *label7 = [[UILabel alloc] initWithFrame:CGRectMake(kGap, 140, [UIScreen mainScreen].bounds.size.width - 2 * kGap,kCellHeight)];
-    label7.text = [NSString stringWithFormat:@"Telephone : %@",self.user.userTel];
-    [label7 setFont:[UIFont systemFontOfSize:20]];
-    [label7 setNumberOfLines:0];
-    label7.textAlignment = NSTextAlignmentLeft;
-    [self.scrollView addSubview:label7];
-    self.userRealNameLabel = label7;
-    
-    // 设置邮箱
-    UILabel *label8 = [[UILabel alloc] initWithFrame:CGRectMake(kGap, 180, [UIScreen mainScreen].bounds.size.width - 2 * kGap,kCellHeight)];
-    label8.text = [NSString stringWithFormat:@"E-mail : %@",self.user.userEmail];
-    [label8 setFont:[UIFont systemFontOfSize:20]];
-    [label8 setNumberOfLines:0];
-    label8.textAlignment = NSTextAlignmentLeft;
-    [self.scrollView addSubview:label8];
-    self.userRealNameLabel = label8;
+    // 将user内容加载到array中
+    [self addUserData];
 
 }
 
-- (void)personCenterLeftButton
+- (void)addUserData
 {
-    NSLog(@"personCenterLeftButton");
+    _personArray = [NSMutableArray array];
+    NSString *s1 = [NSString stringWithFormat:@"%@",self.user.userRealName];
+    NSString *s2 = [NSString stringWithFormat:@"%@",self.user.birthPlace];
+    NSString *s3 = [NSString stringWithFormat:@"%@",self.user.userAddress];
+    NSString *s4 = [NSString stringWithFormat:@"%@",self.user.userTel];
+    NSString *s5 = [NSString stringWithFormat:@"%@",self.user.userEmail];
+
+    [_personArray addObject:s1];
+    [_personArray addObject:s2];
+    [_personArray addObject:s3];
+    [_personArray addObject:s4];
+    [_personArray addObject:s5];
+    
+    _titleArray = [NSMutableArray array];
+    [_titleArray addObject:@"Name :"];
+    [_titleArray addObject:@"Birth Place : "];
+    [_titleArray addObject:@"Address : "];
+    [_titleArray addObject:@"Telephone : "];
+    [_titleArray addObject:@"E-mail : "];
+
+}
+
+- (void)changeIcon
+{
+    for (int i = 0; i <_titleArray.count; i++) {
+        NSLog(@"%@",_titleArray[i]);
+    }
 }
 
 - (void)personCenterRightButton
 {
     NSLog(@"personCenterRightButton");
+    self.canEdit = !_canEdit;
+    [self.tableView reloadData];
+}
+
+- (void)Edit:(id)sender
+{
+    NSLog(@"%f",[sender X]);
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
 //    [self.user setUserData];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -200,45 +217,92 @@
 
 #pragma mark - Table view data source
 
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//    // Return the number of sections.
-//    return 0;
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    // Return the number of rows in the section.
-//    return 0;
-//}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _personArray.count;
+}
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentical = @"personCell";
+    UserCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentical];
+    if (!cell) {
+        cell = [[UserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentical];
+    }
     
-    // Configure the cell...
+    cell.title.text = _titleArray[indexPath.row];
+    cell.content.text = _personArray[indexPath.row];
+    cell.content.enabled = _canEdit;
+    
+    UIButton *modify = [[UIButton alloc] init];
+    modify.bounds = CGRectMake(0, 0, 30, 30);
+    [modify setBackgroundImage:[UIImage imageNamed:@"edit-file.png"] forState:UIControlStateNormal];
+//    [modify addTarget:self action:@selector(modifyContent:) forControlEvents:UIControlEventTouchUpInside];
+    modify.hidden = YES;
+    cell.accessoryView = modify;
+
     
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-*/
 
-/*
+//- (void)modifyContent:(id)sender
+//{
+//    static NSIndexPath *lastIndexPath = nil;
+//    
+//    // 1.获取cell及indexPath
+//    UserCell *viewCell = (UserCell *)[sender superview];
+//    NSIndexPath *indexpath = [self.tableView indexPathForCell:viewCell];
+//    // 2.设置相关属性
+//    
+//    if (lastIndexPath == nil) {
+//        viewCell.content.enabled = YES;
+//        [viewCell.content selectAll:viewCell.content];
+//    }
+//    else if (lastIndexPath == indexpath)
+//    {
+//        viewCell.content.enabled = NO;
+//
+//    }
+//    else
+//    {
+//        UserCell *Cell = (UserCell *)[self.tableView cellForRowAtIndexPath:lastIndexPath];
+//        Cell.content.enabled = NO;
+//        viewCell.content.enabled = YES;
+//
+//        [viewCell.content selectAll:viewCell.content];
+//    }
+//    
+//    // 3.当点击下一个时，保存现在的属性
+//    _personArray[indexpath.row] = viewCell.content.text;
+//    lastIndexPath = indexpath;
+//    NSLog(@"now--%@//last--%@",_personArray[indexpath.row],_personArray[0]);
+//    //    viewCell.content.enabled = YES;
+//    
+//}
+
+// Override to support conditional editing of the table view.
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+//    // Return NO if you do not want the specified item to be editable.
+//    return YES;
+//}
+
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        
     }   
 }
-*/
 
 /*
 // Override to support rearranging the table view.

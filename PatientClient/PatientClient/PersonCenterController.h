@@ -13,5 +13,7 @@
 
 @property (nonatomic, strong) UIButton *leftItem;
 @property (nonatomic,strong) User *user;
+@property (nonatomic,strong) UIScrollView *scrollView;
+
 
 @end
