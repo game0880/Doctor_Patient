@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "DrawerViewController.h"
 
-@interface HomeController :UIViewController
+@interface HomeController :DrawerViewController
 
 @property (nonatomic, strong) UIButton *leftItem;
+
+@property (nonatomic,strong) UIButton *startButton;
+@property (nonatomic,strong) UIButton *resumeButton;
+
 
 @end

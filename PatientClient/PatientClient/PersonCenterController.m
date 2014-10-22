@@ -50,31 +50,6 @@
     return self;
 }
 
-//- (void)test
-//{
-//    //圆角设置
-//    UIImageView *imageView = [[UIImageView alloc] init];
-//    imageView.layer.cornerRadius
-//    = 8;
-//    
-//    imageView.layer.masksToBounds
-//    = YES;
-//    
-//    //边框宽度及颜色设置
-//    
-//    [imageView.layer
-//     setBorderWidth:2];
-//    
-//    [imageView.layer setBorderColor:[UIColor blueColor]];  //设置边框为蓝色
-//    
-//    
-//    
-//    //自动适应,保持图片宽高比
-//    
-//    imageView.contentMode
-//    = UIViewContentModeScaleAspectFit;
-//}
-
 - (void)initUI
 {
     // 标题
@@ -114,7 +89,7 @@
     self.tableView = tabView;
     
     self.canEdit = NO;
-
+    
 }
 
 - (void)initUserUI

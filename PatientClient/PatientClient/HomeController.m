@@ -7,6 +7,9 @@
 //
 
 #import "HomeController.h"
+#import "ResumeController.h"
+#import "StartChatController.h"
+
 #define kLabelHeight 44     
 #define kCellHeight 60
 #define kGap 10     // 设置屏幕两边的间距
@@ -113,8 +116,8 @@
     [startBtn setBackgroundColor:[UIColor blueColor]];
     [startBtn setTitle:@"Start New Chat" forState:UIControlStateNormal];
     [startBtn.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-    [startBtn addTarget:self action:@selector(startNewChat) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:startBtn];
+    self.startButton = startBtn;
     
     // Resume按钮
     UIButton *ResumeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -122,19 +125,10 @@
     [ResumeBtn setBackgroundColor:[UIColor blueColor]];
     [ResumeBtn setTitle:@"Resume Previous Chat" forState:UIControlStateNormal];
     [ResumeBtn.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-    [ResumeBtn addTarget:self action:@selector(ResumeChat) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:ResumeBtn];
+    self.resumeButton = ResumeBtn;
 }
 
-- (void)startNewChat
-{
-    NSLog(@"Start New Chat");
-}
-
-- (void)ResumeChat
-{
-    NSLog(@"Resume Previous Chat");
-}
 
 - (void)homeLeftButton
 {
