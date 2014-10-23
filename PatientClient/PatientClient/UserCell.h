@@ -1,0 +1,16 @@
+//
+//  UserCell.h
+//  PatientClient
+//
+//  Created by dlz225 on 14-10-20.
+//  Copyright (c) 2014年 duan. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface UserCell : UITableViewCell
+
+@property (nonatomic,strong) UILabel *title;
+@property (nonatomic,strong) UITextField *content;
+//@property (nonatomic,strong) UIButton *modifyBtn;
+@end
