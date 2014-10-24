@@ -1,18 +1,18 @@
 //
-//  DCAPIClient.m
-//  DoctorClient
+//  PCAPIClient.m
+//  PatientClient
 //
-//  Created by JiangTeng on 14/10/19.
-//  Copyright (c) 2014年 com.usc. All rights reserved.
+//  Created by JiangTeng on 14/10/24.
+//  Copyright (c) 2014年 duan. All rights reserved.
 //
 
-#import "DCAPIClient.h"
+#import "PCAPIClient.h"
 #import "AFJSONRequestOperation.h"
 #import "AFNetworking.h"
 
 #import "AFURLConnectionOperation.h"
-
-static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.79:8080/StoryBookServer2.0/";
+@implementation PCAPIClient
+static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryBookServer2.0/";
 
 
 //static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.99:9999/StoryBookServer2.0/";
@@ -25,16 +25,13 @@ static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.79:8080/StoryBo
 //static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.132:9000/";
 
 
-@implementation DCAPIClient
-
-
 + (instancetype)sharedAPIClient{
-
-    static DCAPIClient *clinet = nil;
+    
+    static PCAPIClient *clinet = nil;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        clinet = [[DCAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kDCAPIBaseUrlString]];
+        clinet = [[PCAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kPCAPIBaseUrlString]];
     });
     
     return clinet;
@@ -48,14 +45,14 @@ static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.79:8080/StoryBo
         [self setDefaultHeader:@"Source" value:@"ef5633kkd4-0575-4ca5-9ebd-a16bdc8b2e"];
         [self setDefaultHeader:@"Accept" value:@"application/json"];
         [self.operationQueue setMaxConcurrentOperationCount:5];
-
+        
     }
     
     return self;
 }
 
 - (void)setAccessToken:(NSString*)token{
-    NSString* cookieValue = [NSString stringWithFormat:@"DC_Cookie=%@",token];
+    NSString* cookieValue = [NSString stringWithFormat:@"pickup_sess_id=%@",token];
     [self setDefaultHeader:@"Cookie" value:cookieValue];
 }
 
@@ -65,7 +62,7 @@ static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.79:8080/StoryBo
          success:(void (^)(AFHTTPRequestOperation *, id))success
          failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure{
     
-    DCAPIClient *sharedClient = [[DCAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kDCAPIBaseUrlString]];
+    PCAPIClient *sharedClient = [[PCAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kPCAPIBaseUrlString]];
     [sharedClient setParameterEncoding:AFFormURLParameterEncoding];
     [sharedClient postPath:path
                 parameters:params

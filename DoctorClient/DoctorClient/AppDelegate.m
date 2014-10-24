@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
-
+#import "LoginViewController.h"
 @interface AppDelegate ()
 
 @property (nonatomic, strong) UIWindow *windw;
@@ -24,11 +24,33 @@
     self.window = [[UIWindow alloc] initWithFrame:rect];
     
     
-    self.window.rootViewController = [DCMainViewController shareMainViewController];
-    [self.window makeKeyAndVisible];
+    UIViewController *rootcontroller ;
+    NSUserDefaults *userInputDef = [NSUserDefaults standardUserDefaults];
+    NSString *name = [userInputDef objectForKey:kLoginName];
+    if (!name) {
+        NSString *password = [userInputDef objectForKey:name];
+        if (password != nil) {
+         //login success
+         
+            rootcontroller = [DCMainViewController shareMainViewController];
+            
+        }else{
+            rootcontroller = [[LoginViewController alloc] init];
+        }
+    }else{
+        rootcontroller = [[LoginViewController alloc] init];
+    }
+
     
+    
+    
+    self.window.rootViewController = rootcontroller;
+    [self.window makeKeyAndVisible];
     return YES;
 }
+
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
