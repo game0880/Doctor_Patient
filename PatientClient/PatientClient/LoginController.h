@@ -13,4 +13,6 @@
 @property (nonatomic,copy) NSString *Id;
 @property (nonatomic,copy) NSString *password;
 @property (nonatomic,strong) UIButton *leftItem;
+
+@property (nonatomic,strong) UIScrollView *scrollView;
 @end

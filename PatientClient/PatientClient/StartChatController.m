@@ -9,6 +9,7 @@
 #import "StartChatController.h"
 #import "PersonCenterController.h"
 #import "startCell.h"
+#import "DialogController.h"
 
 @interface StartChatController () <UITableViewDataSource,UITableViewDelegate>
 
@@ -103,6 +104,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 44;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DialogController *dialog = [[DialogController alloc] init];
+    [self.navigationController pushViewController:dialog animated:YES];
 }
 /*
 #pragma mark - Navigation

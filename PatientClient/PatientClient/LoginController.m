@@ -32,27 +32,33 @@
 
 - (void)initUI
 {
+    // scrollview
+    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    // 设置滚动size
+    self.scrollView.contentSize = CGSizeMake(0, [UIScreen mainScreen].bounds.size.height);
+    [self.view addSubview:self.scrollView];
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     // 设置label 及 textfield属性
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 70, [UIScreen mainScreen].bounds.size.width / 2, 44)];
     label1.text = @"Account Name";
     [label1 setFont:[UIFont systemFontOfSize:18]];
     self.idLabel = label1;
-    [self.view addSubview:label1];
+    [self.scrollView addSubview:label1];
     
     UITextField *field1 = [[UITextField alloc] initWithFrame:CGRectMake(20, 110, [UIScreen mainScreen].bounds.size.width - 40, 30)];
 //    [field1 setBackgroundColor:[UIColor grayColor]];
     field1.borderStyle = UITextBorderStyleLine;
     field1.delegate = self;
     self.idTextField = field1;
-    [self.view addSubview:field1];
+    [self.scrollView addSubview:field1];
     field1.userInteractionEnabled = YES;
     
     UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 150, [UIScreen mainScreen].bounds.size.width / 2, 44)];
     label2.text = @"PassWord";
     [label2 setFont:[UIFont systemFontOfSize:18]];
     self.passwordLabel = label2;
-    [self.view addSubview:label2];
+    [self.scrollView addSubview:label2];
     
     UITextField *field2 = [[UITextField alloc] initWithFrame:CGRectMake(20, 190, [UIScreen mainScreen].bounds.size.width - 40, 30)];
     field2.secureTextEntry = YES;
@@ -61,7 +67,7 @@
     field2.userInteractionEnabled = YES;
         
     self.passwordTextField = field2;
-    [self.view addSubview:field2];
+    [self.scrollView addSubview:field2];
     
     
     // 登录按钮
@@ -71,7 +77,12 @@
     [btn setTitle:@"Sign In" forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(Login) forControlEvents:UIControlEventTouchDown];
     self.loginBtn = btn;
-    [self.view addSubview:btn];
+    [self.scrollView addSubview:btn];
+    
+    // 监听鼠标事件
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTap:)];
+    [self.scrollView addGestureRecognizer:tap];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeKeyBoard:) name:UIKeyboardWillChangeFrameNotification object:nil];
 
 }
 
@@ -94,6 +105,42 @@
 {
     [textField resignFirstResponder];
     return YES;
+}
+
+
+#pragma mark ---触摸关闭键盘----
+-(void)handleTap:(UIGestureRecognizer *)gesture
+{
+    [self.view endEditing:YES];
+}
+
+
+#pragma mark ----键盘高度变化------
+-(void)changeKeyBoard:(NSNotification *)aNotifacation
+{
+    //获取到键盘frame 变化之前的frame
+    NSValue *keyboardBeginBounds=[[aNotifacation userInfo]objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect beginRect=[keyboardBeginBounds CGRectValue];
+    
+    //获取到键盘frame变化之后的frame
+    NSValue *keyboardEndBounds=[[aNotifacation userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect endRect=[keyboardEndBounds CGRectValue];
+    
+    CGFloat deltaY=endRect.origin.y-beginRect.origin.y;
+    //拿frame变化之后的origin.y-变化之前的origin.y，其差值(带正负号)就是我们self.view的y方向上的增量
+    
+    [CATransaction begin];
+    [UIView animateWithDuration:0.4f animations:^{
+        
+        [self.view setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y+deltaY, self.view.frame.size.width, self.view.frame.size.height)];
+        [self.scrollView setContentInset:UIEdgeInsetsMake(self.scrollView.contentInset.top-deltaY, 0, 0, 0)];
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+    [CATransaction commit];
+    
 }
 
 - (void)viewDidLoad {
