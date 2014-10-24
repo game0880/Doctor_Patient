@@ -12,7 +12,7 @@
 
 #import "AFURLConnectionOperation.h"
 
-static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryBookServer2.0/";
+static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.79:8080/StoryBookServer2.0/";
 
 
 //static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.99:9999/StoryBookServer2.0/";
@@ -45,7 +45,7 @@ static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryB
     if (self) {
         [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
         [self setParameterEncoding:AFJSONParameterEncoding];
-        [self setDefaultHeader:@"Source" value:@"ef5633d4-0575-4ca5-9ebd-a16bb4dc8b2e"];
+        [self setDefaultHeader:@"Source" value:@"ef5633kkd4-0575-4ca5-9ebd-a16bdc8b2e"];
         [self setDefaultHeader:@"Accept" value:@"application/json"];
         [self.operationQueue setMaxConcurrentOperationCount:5];
 
@@ -55,7 +55,7 @@ static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryB
 }
 
 - (void)setAccessToken:(NSString*)token{
-    NSString* cookieValue = [NSString stringWithFormat:@"pickup_sess_id=%@",token];
+    NSString* cookieValue = [NSString stringWithFormat:@"DC_Cookie=%@",token];
     [self setDefaultHeader:@"Cookie" value:cookieValue];
 }
 

@@ -135,7 +135,27 @@
         [userDefault setObject:name forKey:kLoginName];
         [userDefault setObject:pwd forKey:name];
         [userDefault synchronize];
-        self.view.window.rootViewController = [DCMainViewController shareMainViewController];
+        
+        NSMutableDictionary *para = [NSMutableDictionary dictionary];
+        [para setObject:pwd forKey:@"passWord"];
+        [para setObject:name forKey:@"userName"];
+        
+        [DCAPIClient userAuth:@"login!login"
+                   parameters:para
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             
+                          NSString *str = [responseObject objectForKey:@"userInfo"];
+                          
+                          [[DCAPIClient sharedAPIClient] setAccessToken:str];
+                          NSLog(@"%@",str);
+                          self.view.window.rootViewController = [DCMainViewController shareMainViewController];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+        
+        
+        
+        
     }
 }
 

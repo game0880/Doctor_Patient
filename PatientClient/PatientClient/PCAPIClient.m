@@ -42,7 +42,7 @@ static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryB
     if (self) {
         [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
         [self setParameterEncoding:AFJSONParameterEncoding];
-        [self setDefaultHeader:@"Source" value:@"ef5633d4-0575-4ca5-9ebd-a16bb4dc8b2e"];
+        [self setDefaultHeader:@"Source" value:@"ef5633kkd4-0575-4ca5-9ebd-a16bdc8b2e"];
         [self setDefaultHeader:@"Accept" value:@"application/json"];
         [self.operationQueue setMaxConcurrentOperationCount:5];
         
