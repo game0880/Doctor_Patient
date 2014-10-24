@@ -10,12 +10,15 @@
 #import "PCMainModel.h"
 #import "HomeController.h"
 #import "PersonCenterController.h"
+#import "LoginController.h"
+#import "ResumeController.h"
+#import "StartChatController.h"
 
 @interface PCMainController () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UIView *mainView;
-@property (nonatomic,strong) NSMutableArray *controlArray;
 @property (nonatomic,strong) UITableView *controlTableView;
+//@property (nonatomic,strong) NSMutableArray *controlArray;
 
 @end
 
@@ -74,26 +77,31 @@
 - (void)addController
 {
     HomeController *viewController = [[HomeController alloc] init];
-    [viewController.leftItem addTarget:self
-                                action:@selector(leftItemClick:)
-                      forControlEvents:UIControlEventTouchUpInside];
     
+    // 点击左上角按钮
+    [viewController.leftItem addTarget:self action:@selector(leftItemClick:) forControlEvents:UIControlEventTouchUpInside];
+    // Start New Chart 按钮
+    [viewController.startButton addTarget:self action:@selector(startNewChat) forControlEvents:UIControlEventTouchUpInside];
+    // Resume Previous Chart 按钮
+    [viewController.resumeButton addTarget:self action:@selector(resumePreviousChat) forControlEvents:UIControlEventTouchUpInside];
+
     PCMainModel *home = [[PCMainModel alloc] init];
     home.control = [[UINavigationController alloc] initWithRootViewController:viewController];
     home.title = @"Home";
+ 
     
-    
-    UIViewController *viewController2 = [[UIViewController alloc] init];
-    viewController2.view.backgroundColor = [UIColor blueColor];
+    StartChatController *viewController2 = [[StartChatController alloc] init];
+    [viewController2.leftItem addTarget:self action:@selector(leftItemClick:) forControlEvents:UIControlEventTouchUpInside];
     PCMainModel *startNewChat = [[PCMainModel alloc] init];
-    startNewChat.control = viewController2;
+    startNewChat.control = [[UINavigationController alloc] initWithRootViewController:viewController2];
     startNewChat.title = @"Start New Chat";
     
-    UIViewController *viewController3 = [[UIViewController alloc] init];
-    viewController3.view.backgroundColor = [UIColor whiteColor];
+    ResumeController *viewController3 = [[ResumeController alloc] init];
     PCMainModel *resumeChat = [[PCMainModel alloc] init];
     resumeChat.control = viewController3;
     resumeChat.title = @"Resume Previous Chat";
+    [viewController3.leftItem addTarget:self action:@selector(leftItemClick:) forControlEvents:UIControlEventTouchUpInside];
+    resumeChat.control = [[UINavigationController alloc] initWithRootViewController:viewController3];
     
     PersonCenterController *viewController4 = [[PersonCenterController alloc] init];
     PCMainModel *personCenter = [[PCMainModel alloc] init];
@@ -103,10 +111,9 @@
     personCenter.control = [[UINavigationController alloc] initWithRootViewController:viewController4];
     personCenter.title = @"Person Center";
     
-    UIViewController *viewController5 = [[UIViewController alloc] init];
-    viewController5.view.backgroundColor = [UIColor greenColor];
+    LoginController *viewController5 = [[LoginController alloc] init];
     PCMainModel *signIn = [[PCMainModel alloc] init];
-    signIn.control = viewController5;
+    signIn.control = [[UINavigationController alloc] initWithRootViewController:viewController5];
     signIn.title = @"Sign In";
     
     [self initCurrentView:home.control.view];
@@ -116,6 +123,22 @@
     [self.controlArray addObject:personCenter];
     [self.controlArray addObject:signIn];
     
+}
+
+#pragma mark 监听start new chat按钮，实现跳转
+- (void)startNewChat
+{
+    PCMainModel *model = _controlArray[1];
+    [self didOpenViewController:model.control];
+    [self leftItemClick:nil];
+}
+
+#pragma mark 监听Resume Previous Chat 按钮，实现跳转
+- (void)resumePreviousChat
+{
+    PCMainModel *model = _controlArray[2];
+    [self didOpenViewController:model.control];
+    [self leftItemClick:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

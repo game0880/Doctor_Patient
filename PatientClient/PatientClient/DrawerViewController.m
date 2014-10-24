@@ -12,8 +12,6 @@
 #define kNeedAdjustDx 6
 #define kNeedAdjustAlpha 0.7
 
-
-
 @interface DrawerViewController ()
 {
     // 刚开始按下去时的x

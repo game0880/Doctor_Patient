@@ -10,6 +10,9 @@
 
 @interface PCMainController : DrawerViewController
 
+
+@property (nonatomic,strong) NSMutableArray *controlArray;
+
 + (instancetype)shareMainViewController;
 
 @end
