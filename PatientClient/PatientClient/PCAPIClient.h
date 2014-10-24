@@ -1,20 +1,18 @@
 //
-//  DCAPIClient.h
-//  DoctorClient
+//  PCAPIClient.h
+//  PatientClient
 //
-//  Created by JiangTeng on 14/10/19.
-//  Copyright (c) 2014年 com.usc. All rights reserved.
+//  Created by JiangTeng on 14/10/24.
+//  Copyright (c) 2014年 duan. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "AFHTTPClient.h"
 
-@interface DCAPIClient : AFHTTPClient
-
+@interface PCAPIClient : AFHTTPClient
++ (instancetype)sharedAPIClient;
 
 - (void)setAccessToken:(NSString*)token;
-
-
-+ (instancetype)sharedAPIClient;
 
 // User Auth
 + (void)userAuth:(NSString*)path
@@ -34,9 +32,5 @@
       parameters:(NSDictionary *)parameters
          success:(void (^)(AFHTTPRequestOperation *, id))success
          failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure;
-
-
-
-
 
 @end

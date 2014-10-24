@@ -8,6 +8,9 @@
 
 #ifndef DoctorClient_PrefixHeader_pch
 #define DoctorClient_PrefixHeader_pch
+
+#import "Constant.h"
+
 #import "DrawerViewController.h"
 #import "DCMainViewController.h"
 #import "Logging.h"

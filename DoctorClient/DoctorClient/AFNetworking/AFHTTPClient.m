@@ -615,6 +615,7 @@ static void AFNetworkReachabilityReleaseCallback(__unused const void *info) {}
 	NSURLRequest *request = [self requestWithMethod:@"GET" path:path parameters:parameters];
     
     [AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"text/html"]];
+//    [AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"text/html"]];
   AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
   [self enqueueHTTPRequestOperation:operation];
     return operation;

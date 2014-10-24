@@ -9,50 +9,33 @@
 #import "LoginViewController.h"
 #import "RegisterViewController.h"
 
+
 @interface LoginViewController ()<UITextFieldDelegate>
 
-{
-    //        UITextField *userInput;
-    //        UITextField *passwordInput;
-    NSDictionary *userInputv;
-    
-}
 
 @property(nonatomic,strong) UITextField *userInput;
-@property (nonatomic, strong) UITextField *passwordInput;
-
-
-@property (nonatomic, strong) UITextField *testTextField;
-
+@property(nonatomic, strong) UITextField *passwordInput;
 
 @end
 
 @implementation LoginViewController
 
 
+#pragma mark self method
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)init{
+    self = [super init];
     if (self) {
-        self.title = @"User Interface";
         
         
-        //        [se;
-        //
-        //        [[NSUserDefaults standardUserDefaults] setObject:@"123456" forKey:@"nihao"];
+        [self initSubview];
     }
+    
     return self;
 }
 
 
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    
-    NSUserDefaults *userInputDef = [NSUserDefaults standardUserDefaults];
-    [userInputDef setObject:self.userInput.text forKey:@"userID"];
+- (void)initSubview{
     
     self.userInput = [[UITextField alloc] initWithFrame:CGRectMake(110, 100, 150, 40)];
     self.userInput.backgroundColor = [UIColor whiteColor];
@@ -62,12 +45,10 @@
     self.userInput.userInteractionEnabled = YES;
     self.userInput.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.userInput.returnKeyType = UIReturnKeyDone;
-    self.userInput.keyboardType = UIKeyboardTypeDefault;
     self.userInput.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.userInput becomeFirstResponder];
     self.userInput.placeholder = @"Username";
     [self.view addSubview:self.userInput];
-    
     
     
     self.passwordInput = [[UITextField alloc] initWithFrame:CGRectMake(110, 200, 150, 40)];
@@ -79,13 +60,9 @@
     self.passwordInput.userInteractionEnabled = YES;
     self.passwordInput.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.passwordInput.returnKeyType = UIReturnKeyDone;
-    self.passwordInput.keyboardType = UIKeyboardTypeDefault;
     self.passwordInput.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.view addSubview:self.passwordInput];
     self.passwordInput.placeholder = @"Password";
-    NSUserDefaults *psaawordInputDef = [NSUserDefaults standardUserDefaults];
-    [psaawordInputDef setObject:self.passwordInput.text forKey:@"pwd"];
-    
     
     UIButton *loginButton =[[UIButton alloc] initWithFrame:CGRectMake(100, 300, 80, 40)];
     loginButton.backgroundColor = [UIColor whiteColor];
@@ -93,10 +70,6 @@
     [loginButton setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
     [loginButton addTarget:self action:@selector(onloginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginButton];
-    
-    
-    //    [NSUserDefaults standardUserDefaults] ;
-    
     
     UIButton *registerButton =[[UIButton alloc] initWithFrame:CGRectMake(100, 350, 80, 40)];
     registerButton.backgroundColor = [UIColor whiteColor];
@@ -110,30 +83,64 @@
     userName.text = @"Username:";
     [self.view addSubview:userName];
     
-    
     UILabel *passWord= [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 100, 40)];
     passWord.backgroundColor = [UIColor whiteColor];
     passWord.text = @"Password:";
     [self.view addSubview:passWord];
     
-    
-    UITextField *textfield = [[UITextField alloc] init];
-    textfield.backgroundColor = [UIColor redColor];
-    self.testTextField = textfield;
-    
-    [self.view addSubview:textfield];
-    
+}
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+
     // Do any additional setup after loading the view.
 }
 
 - (void)pushRVC
 {
     RegisterViewController *registerVC = [[RegisterViewController alloc] init];
-    [self.navigationController pushViewController:registerVC animated:YES];
+    [self presentViewController:registerVC
+                       animated:YES
+                     completion:^{
+        
+    }];
 }
 
 
 
+
+
+
+
+
+#pragma mark -------------------
+- (void)onloginButtonClicked:(UIButton*)button{
+    [self dologin];
+    
+}
+- (void)dologin
+{
+    NSString *name = self.userInput.text;
+    NSString *pwd = self.passwordInput.text;
+    NSString *message = nil;
+    if (name == nil) {
+        message = @"Account can not be empty";
+    }else if (pwd == nil){
+        message = @ "Password can not be empty";
+    }else{
+      //login success
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        [userDefault setObject:name forKey:kLoginName];
+        [userDefault setObject:pwd forKey:name];
+        [userDefault synchronize];
+        self.view.window.rootViewController = [DCMainViewController shareMainViewController];
+    }
+}
+
+#pragma mark -------------------
+#pragma mark UITextFieldDelegate
 
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -142,61 +149,6 @@
     return YES;
 }
 
-//- (void)textFieldDidEndEditing:(UITextField *)textField
-//{
-//    [self resignFirstResponder];
-//}
-
-
-#pragma mark -------------------
-#pragma mark textFieldButton 的响应函数
-- (void)onloginButtonClicked:(UIButton*)button{
-    [self dologin];
-    //[self.passwordInput resignFirstResponder];
-    
-}
-- (void)dologin
-{
-    NSString *name = self.userInput.text;
-    NSString *pwd = self.passwordInput.text;
-    NSString *message = [[NSString alloc] init];
-    if (name == nil) {
-        message = @"Account can not be empty";
-    }else if (pwd == nil){
-        message = @ "Password can not be empty";
-    }else{
-        
-    }
-}
-
-//以下是UITextFieldDelegate 的部分委托实现
-#pragma mark -------------------
-#pragma mark UITextFieldDelegate
-
--(BOOL)textFieldShouldBeginEditing:(UITextField *)userInput{
-    // return NO to disallow editing.
-    return YES;
-}
-//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-//{
-//    [self.userInput resignFirstResponder];
-//
-//}
-- (void)textFieldDidBeginEditing:(UITextField *)userInput{
-    // became first responder
-    
-    
-    // 在这里监听UITextField becomeFirstResponder事件
-}
-- (BOOL)textFieldShouldEndEditing:(UITextField *)userInput{
-    // return YES to allow editing to stop and to resign first responder status. NO to disallow the editing session to end
-    
-    return YES;
-}
-- (void)textFieldDidEndEditing:(UITextField *)userInput{
-    // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
-    // 在这里监听UITextField resignFirstResponder事件
-}
 - (BOOL)textField:(UITextField *)_userInput shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     // return NO to not change text
     if (range.location > 20)
@@ -213,41 +165,6 @@
 
 
 
-#pragma mark -------------------
-#pragma mark UITextFieldDelegate
-
-- (BOOL)textFieldInputShouldBeginEditing:(UITextField *)passwordInput{
-    // return NO to disallow editing.
-    return YES;
-}
-- (void)textFieldInputDidBeginEditing:(UITextField *)passwordInput{
-    // became first responder
-    // 在这里监听UITextField becomeFirstResponder事件
-}
-- (BOOL)textFieldInputShouldEndEditing:(UITextField *)passwordInput{
-    // return YES to allow editing to stop and to resign first responder status. NO to disallow the editing session to end
-    return YES;
-}
-- (void)ptextFieldInputDidEndEditing:(UITextField *)passwordInput{
-    // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
-    // 在这里监听UITextField resignFirstResponder事件
-}
-- (BOOL)passwordInput:(UITextField *)passwordInput shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    
-    
-    
-    // return NO to not change text
-    if (range.location > 20)
-    {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@" Length cannot be greater than 20" delegate:nil cancelButtonTitle:@"close" otherButtonTitles:nil];
-        [alertView show];
-        
-        
-        return NO;
-    }
-    NSLog(@"inputText: %@", passwordInput.text);
-    return YES;
-}
 
 
 

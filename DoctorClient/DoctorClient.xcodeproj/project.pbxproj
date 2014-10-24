@@ -69,6 +69,7 @@
 		A70ACC8919F34953009BAC9A /* DCAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCAPIClient.h; sourceTree = "<group>"; };
 		A70ACC8A19F34953009BAC9A /* DCAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCAPIClient.m; sourceTree = "<group>"; };
 		A70ACCBE19F357C1009BAC9A /* Logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logging.h; sourceTree = "<group>"; };
+		A725106319FA045C000D2A2E /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		A74D13D619EFBE8A008234EB /* DoctorClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoctorClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A74D13DA19EFBE8A008234EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A74D13DB19EFBE8A008234EB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -188,6 +189,7 @@
 				A74D13DA19EFBE8A008234EB /* Info.plist */,
 				A74D13DB19EFBE8A008234EB /* main.m */,
 				A74D141019EFC873008234EB /* PrefixHeader.pch */,
+				A725106319FA045C000D2A2E /* Constant.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
