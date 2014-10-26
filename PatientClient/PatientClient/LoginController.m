@@ -9,6 +9,7 @@
 #import "LoginController.h"
 #import "PCMainController.h"
 #import "AccountTool.h"
+#import "PCAPIClient.h"
 
 @interface LoginController () <UITextFieldDelegate>
 @property (nonatomic,strong) UILabel *idLabel;  //账号label
@@ -26,6 +27,7 @@
 {
     if (self = [super init]) {
         [self initUI];
+        
     }
     return self;
 }
@@ -40,29 +42,28 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     // 设置label 及 textfield属性
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 70, [UIScreen mainScreen].bounds.size.width / 2, 44)];
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, [UIScreen mainScreen].bounds.size.width / 2, 44)];
     label1.text = @"Account Name";
     [label1 setFont:[UIFont systemFontOfSize:18]];
     self.idLabel = label1;
     [self.scrollView addSubview:label1];
     
-    UITextField *field1 = [[UITextField alloc] initWithFrame:CGRectMake(20, 110, [UIScreen mainScreen].bounds.size.width - 40, 30)];
-//    [field1 setBackgroundColor:[UIColor grayColor]];
-    field1.borderStyle = UITextBorderStyleLine;
+    UITextField *field1 = [[UITextField alloc] initWithFrame:CGRectMake(20, 70, [UIScreen mainScreen].bounds.size.width - 40, 30)];
+    field1.borderStyle = UITextBorderStyleRoundedRect;
     field1.delegate = self;
     self.idTextField = field1;
     [self.scrollView addSubview:field1];
     field1.userInteractionEnabled = YES;
     
-    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 150, [UIScreen mainScreen].bounds.size.width / 2, 44)];
+    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, [UIScreen mainScreen].bounds.size.width / 2, 44)];
     label2.text = @"PassWord";
     [label2 setFont:[UIFont systemFontOfSize:18]];
     self.passwordLabel = label2;
     [self.scrollView addSubview:label2];
     
-    UITextField *field2 = [[UITextField alloc] initWithFrame:CGRectMake(20, 190, [UIScreen mainScreen].bounds.size.width - 40, 30)];
+    UITextField *field2 = [[UITextField alloc] initWithFrame:CGRectMake(20, 150, [UIScreen mainScreen].bounds.size.width - 40, 30)];
     field2.secureTextEntry = YES;
-    field2.borderStyle = UITextBorderStyleLine;
+    field2.borderStyle = UITextBorderStyleRoundedRect;
     field2.delegate = self;
     field2.userInteractionEnabled = YES;
         
@@ -71,7 +72,7 @@
     
     
     // 登录按钮
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(20, 240, [UIScreen mainScreen].bounds.size.width - 40, 44)];
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(20, 190, [UIScreen mainScreen].bounds.size.width - 40, 44)];
     [btn setBackgroundColor:[UIColor blueColor]];
     [btn.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
     [btn setTitle:@"Sign In" forState:UIControlStateNormal];
@@ -82,10 +83,9 @@
     // 监听鼠标事件
     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTap:)];
     [self.scrollView addGestureRecognizer:tap];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeKeyBoard:) name:UIKeyboardWillChangeFrameNotification object:nil];
-
 }
 
+#pragma mark 监听Login
 - (void)Login
 {
     NSLog(@"UserName:%@--password:%@",self.idTextField.text,self.passwordTextField.text);
@@ -93,18 +93,24 @@
     account.accountName = self.idTextField.text;
     account.password = self.passwordTextField.text;
     [[AccountTool sharedAccountTool] saveAccount:account];
+    
+    // 账户登录
+    [PCAPIClient userAuth:@"login!login" parameters:@{@"userName":self.idTextField.text,@"passWord":self.passwordTextField.text} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // 判断账户是否正确
+        if ([responseObject[@"loginInfo"] isEqualToString:@"loginError! "]) {
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:@"Account Name or Password is wrong " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            [alert show];
+        }
+        else
+        {
+            NSLog(@"success!!!");
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        NSLog(@"failure!!!!");
+    }];
+    
     self.view.window.rootViewController = [PCMainController shareMainViewController];
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [textField becomeFirstResponder];
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
 }
 
 
@@ -112,35 +118,6 @@
 -(void)handleTap:(UIGestureRecognizer *)gesture
 {
     [self.view endEditing:YES];
-}
-
-
-#pragma mark ----键盘高度变化------
--(void)changeKeyBoard:(NSNotification *)aNotifacation
-{
-    //获取到键盘frame 变化之前的frame
-    NSValue *keyboardBeginBounds=[[aNotifacation userInfo]objectForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect beginRect=[keyboardBeginBounds CGRectValue];
-    
-    //获取到键盘frame变化之后的frame
-    NSValue *keyboardEndBounds=[[aNotifacation userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey];
-    
-    CGRect endRect=[keyboardEndBounds CGRectValue];
-    
-    CGFloat deltaY=endRect.origin.y-beginRect.origin.y;
-    //拿frame变化之后的origin.y-变化之前的origin.y，其差值(带正负号)就是我们self.view的y方向上的增量
-    
-    [CATransaction begin];
-    [UIView animateWithDuration:0.4f animations:^{
-        
-        [self.view setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y+deltaY, self.view.frame.size.width, self.view.frame.size.height)];
-        [self.scrollView setContentInset:UIEdgeInsetsMake(self.scrollView.contentInset.top-deltaY, 0, 0, 0)];
-        
-    } completion:^(BOOL finished) {
-        
-    }];
-    [CATransaction commit];
-    
 }
 
 - (void)viewDidLoad {

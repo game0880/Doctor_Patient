@@ -30,7 +30,7 @@
     [self.contentView addSubview:label2];
     self.subject = label2;
     
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(220, 2, 80, 40)];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(210, 2, 80, 40)];
     [self.contentView addSubview:imgView];
     self.statesView = imgView;
 }
@@ -39,15 +39,26 @@
     // Initialization code
 }
 
-
+//@{@"doctName":@"Doctor A",@"subjects":@"风湿内科",@"status":@"on"}
 - (void)setIndexPath:(NSIndexPath *)indexPath
 {
+    NSDictionary *dict = self.dataArray[indexPath.row];
+    self.doctorName.text = dict[@"doctName"];
+    self.subject.text = dict[@"subjects"];
+    NSString *s = dict[@"status"];
+    if ([s isEqualToString:@"on"]) {
+        self.statesView.image = [UIImage imageNamed:@"switch_on.png"];
+    }
+    else if ([s isEqualToString:@"off"])
+    {
+        self.statesView.image = [UIImage imageNamed:@"switch_off.png"];
+    }
     UIImageView *background = [[UIImageView alloc] init];
-    
     // 设置cell背景为圆角
     background.image = [[UIImage imageNamed:@"common_card_background@2x.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
-        
     self.backgroundView = background;
+    
+    
 }
 
 

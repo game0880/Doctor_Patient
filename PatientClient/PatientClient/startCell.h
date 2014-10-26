@@ -14,5 +14,5 @@
 @property (nonatomic,strong) UILabel *subject;
 @property (nonatomic,strong) UIImageView *statesView;
 @property (nonatomic,strong) NSIndexPath *indexPath;
-@property (nonatomic,strong) UITableView *myTableView;
+@property (nonatomic,strong) NSArray *dataArray;
 @end

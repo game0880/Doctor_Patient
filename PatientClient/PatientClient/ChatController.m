@@ -97,6 +97,8 @@
     
     UITextField *field = [[UITextField alloc] initWithFrame:CGRectMake(2 * kGap, 7, [UIScreen mainScreen].bounds.size.width - 90, 30)];
     field.borderStyle = UITextBorderStyleRoundedRect;
+    // 设置提示文字
+    field.placeholder = @"Please Input...";
     field.delegate = self;
     [self.inputView addSubview:field];
     self.inputField = field;
@@ -123,6 +125,11 @@
 {
     NSLog(@"%@",self.inputField.text);
 }
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+}
+
 
 #pragma mark ---触摸关闭键盘----
 -(void)handleTap:(UIGestureRecognizer *)gesture

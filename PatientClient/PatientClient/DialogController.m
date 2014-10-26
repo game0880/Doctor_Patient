@@ -19,11 +19,8 @@
 @property (nonatomic,strong) UIView *firstView;
 @property (nonatomic,strong) UITableView *secondView;
 @property (nonatomic,strong) UILabel *subjectLabel;
-@property (nonatomic,strong) UILabel *subjectContentLabel;
 @property (nonatomic,strong) UILabel *doctorLabel;
-@property (nonatomic,strong) UILabel *doctorContentLabel;
 @property (nonatomic,strong) UILabel *patientLabel;
-@property (nonatomic,strong) UILabel *patientContentLabel;
 @property (nonatomic,strong) UIButton *takePicBtn;
 @property (nonatomic,strong) UIButton *VideoChatBtn;
 
@@ -152,7 +149,7 @@
     btn2.frame = CGRectMake(2 * kGap, btn1.frame.origin.y + 44 + 20, [UIScreen mainScreen].bounds.size.width - 4 * kGap, 44);
     [btn2 setBackgroundColor:[UIColor blueColor]];
     [btn2 setTitle:@"Enable Video Chat" forState:UIControlStateNormal];
-    [btn2.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
+    [btn2.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
     [self.scrollView addSubview:btn2];
     self.VideoChatBtn = btn2;
     

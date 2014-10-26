@@ -12,4 +12,7 @@
 
 @property (nonatomic,strong) UIScrollView *scrollView;
 @property (nonatomic,strong) UIButton *leftItem;
+@property (nonatomic,strong) UILabel *subjectContentLabel;
+@property (nonatomic,strong) UILabel *doctorContentLabel;
+@property (nonatomic,strong) UILabel *patientContentLabel;
 @end

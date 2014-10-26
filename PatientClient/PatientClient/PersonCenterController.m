@@ -13,7 +13,7 @@
 #define kCellHeight 40
 #define kGap 13
 
-@interface PersonCenterController () <UITableViewDataSource,UITableViewDelegate>
+@interface PersonCenterController () <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 
 @property (nonatomic,strong) UILabel *userNameLabel;
 @property (nonatomic,strong) UILabel *userRealNameLabel;
@@ -56,7 +56,7 @@
     self.title = @"Person Center";
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     // 设置滚动size
-    self.scrollView.contentSize = CGSizeMake(0, 1000);
+    self.scrollView.contentSize = CGSizeMake(0, [UIScreen mainScreen].bounds.size.height);
     [self.view addSubview:self.scrollView];
     
     // 左边按钮
@@ -90,6 +90,21 @@
     
     self.canEdit = NO;
     
+    // 底部登出按钮
+    UIButton *outBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    outBtn.frame = CGRectMake(2 * kGap, startBtn.frame.origin.y + kButtonHeight + 20, kTableViewWidth - 2 *kGap, kButtonHeight);
+    outBtn.bounds = CGRectMake(0, 0, 0, 44);
+    [outBtn setBackgroundColor:[UIColor blueColor]];
+    [outBtn setTitle:@"Sign Out" forState:UIControlStateNormal];
+    [outBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
+    [outBtn addTarget:self action:@selector(SignOut) forControlEvents:UIControlEventTouchUpInside];
+    [self.tableView addSubview:outBtn];
+    self.tableView.tableFooterView = outBtn;
+}
+
+- (void)SignOut
+{
+    NSLog(@"sign out!!!");
 }
 
 - (void)initUserUI
@@ -175,10 +190,10 @@
     [self.tableView reloadData];
 }
 
-- (void)Edit:(id)sender
-{
-    NSLog(@"%f",[sender X]);
-}
+//- (void)Edit:(id)sender
+//{
+//    NSLog(@"%f",[sender X]);
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -208,16 +223,14 @@
     cell.title.text = _titleArray[indexPath.row];
     cell.content.text = _personArray[indexPath.row];
     cell.content.enabled = _canEdit;
-    
-    UIButton *modify = [[UIButton alloc] init];
-    modify.bounds = CGRectMake(0, 0, 30, 30);
-    [modify setBackgroundImage:[UIImage imageNamed:@"edit-file.png"] forState:UIControlStateNormal];
-//    [modify addTarget:self action:@selector(modifyContent:) forControlEvents:UIControlEventTouchUpInside];
-    modify.hidden = YES;
-    cell.accessoryView = modify;
-
+    cell.content.delegate = self;
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 10;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -272,7 +285,8 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+    
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         

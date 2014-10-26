@@ -12,7 +12,7 @@
 
 #import "AFURLConnectionOperation.h"
 @implementation PCAPIClient
-static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryBookServer2.0/";
+static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.79:8080/StoryBookServer2.0/";
 
 
 //static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.99:9999/StoryBookServer2.0/";
@@ -24,7 +24,7 @@ static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryB
 
 //static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.132:9000/";
 
-
+#pragma mark 创建APIClient
 + (instancetype)sharedAPIClient{
     
     static PCAPIClient *clinet = nil;
@@ -37,6 +37,7 @@ static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryB
     return clinet;
 }
 
+#pragma mark 初始化BaseURL
 - (id)initWithBaseURL:(NSURL *)url {
     self = [super initWithBaseURL:url];
     if (self) {
@@ -51,12 +52,13 @@ static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryB
     return self;
 }
 
+#pragma mark 设置accessToken
 - (void)setAccessToken:(NSString*)token{
     NSString* cookieValue = [NSString stringWithFormat:@"pickup_sess_id=%@",token];
     [self setDefaultHeader:@"Cookie" value:cookieValue];
 }
 
-
+#pragma mark 用户认证
 + (void)userAuth:(NSString *)path
       parameters:(NSDictionary *)params
          success:(void (^)(AFHTTPRequestOperation *, id))success
@@ -74,7 +76,7 @@ static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryB
                    }];
 }
 
-
+#pragma mark -
 - (AFHTTPRequestOperation *)getPath:(NSString *)path
                          parameters:(NSDictionary *)parameters
                             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
@@ -102,8 +104,6 @@ static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.132:8080/StoryB
                                                }];
     return operation;
 }
-
-
 
 
 - (void)JSONPostPath:(NSString *)path
