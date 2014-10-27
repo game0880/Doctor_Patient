@@ -22,5 +22,5 @@
 
 + (instancetype)shareUser;
 
-- (void)setUserData:(NSDictionary *)dictionary;
+//- (void)setUserData:(NSDictionary *)dictionary;
 @end

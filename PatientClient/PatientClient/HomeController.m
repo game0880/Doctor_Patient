@@ -84,7 +84,7 @@
 - (void)initProperty
 {
     // 初始化数组,创建假数据
-    NSArray *Arr = @[@"das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师的范德萨发",@"das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师的范德萨发das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师发发发撒旦法撒旦法师法师发发发撒旦法撒旦法师法师",@"das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师的范德萨发",@"das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师的范德萨发"];
+    NSArray *Arr = @[@"das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师的范德萨发",@"das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师的范德萨发das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师发发发撒旦法撒旦法师法师发发发撒旦法撒旦法师法师",@"das的撒的飞阿",@"das的撒的飞阿尔穷人多发发发撒旦法撒旦法师法师的范德萨发"];
     _msgArray = [NSMutableArray arrayWithArray:Arr];
     
     
@@ -134,7 +134,7 @@
     ResumeBtn.frame = CGRectMake(2 * kGap, startBtn.frame.origin.y + kButtonHeight + 20, kTableViewWidth - 2 *kGap, kButtonHeight);
     [ResumeBtn setBackgroundColor:[UIColor blueColor]];
     [ResumeBtn setTitle:@"Resume Previous Chat" forState:UIControlStateNormal];
-    [ResumeBtn.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
+    [ResumeBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
     [self.scrollView addSubview:ResumeBtn];
     self.resumeButton = ResumeBtn;
 }

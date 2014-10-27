@@ -88,7 +88,6 @@
 #pragma mark 监听Login
 - (void)Login
 {
-    NSLog(@"UserName:%@--password:%@",self.idTextField.text,self.passwordTextField.text);
     Account *account = [[Account alloc] init];
     account.accountName = self.idTextField.text;
     account.password = self.passwordTextField.text;
@@ -104,6 +103,7 @@
         else
         {
             NSLog(@"success!!!");
+            NSLog(@"%@",responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
        

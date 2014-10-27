@@ -12,6 +12,8 @@
 
 @interface ResumeController ()
 
+@property (nonatomic,assign) BOOL canEdit;  // 是否能修改状态
+
 @end
 
 @implementation ResumeController
@@ -20,6 +22,7 @@
 {
     if (self = [super initWithStyle:style]) {
         [self initUI];
+        self.canEdit = NO;
     }
     return self;
 }
@@ -45,18 +48,24 @@
     self.tableView.userInteractionEnabled = YES;
 }
 
+#pragma mark edit按钮
 - (void)rightButton
 {
+    self.canEdit = !_canEdit;
+    
+    // 更改edit按钮样式
+    if (self.canEdit == YES) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(rightButton)];
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(rightButton)];
+    }
+    [self.tableView reloadData];
     
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -79,6 +88,8 @@
         cell = [[ResumeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentical];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    
+    cell.accessoryView.hidden = self.canEdit;
     
     return cell;
 }

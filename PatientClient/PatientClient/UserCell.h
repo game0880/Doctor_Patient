@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSString+duan.h"
 
 @interface UserCell : UITableViewCell
 
 @property (nonatomic,strong) UILabel *title;
 @property (nonatomic,strong) UITextField *content;
-//@property (nonatomic,strong) UIButton *modifyBtn;
+@property (nonatomic,strong) NSIndexPath *indexPath;
+@property (nonatomic,strong) NSMutableArray *titleArray;
+@property (nonatomic,strong) NSMutableArray *contentArray;
+
 @end
