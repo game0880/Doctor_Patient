@@ -15,6 +15,6 @@
 
 @property (nonatomic,strong) UIButton *startButton;
 @property (nonatomic,strong) UIButton *resumeButton;
-
+@property (nonatomic,strong) UIScrollView *scrollView;
 
 @end

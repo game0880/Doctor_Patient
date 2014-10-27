@@ -21,17 +21,4 @@
     return user;
 }
 
-- (void)setUserData:(NSDictionary *)dictionary
-{
-    self.userName = @"0001";
-    self.userRealName = @"张三";
-    self.age = 22;
-    self.sex = @"男";
-    self.birthPlace = @"湖南省长沙市";
-    self.userAddress = @"中南大学铁道学院";
-    self.photoPath = @"ditu_ic.png";
-    self.userTel = @"888232421";
-    self.userEmail = @"hhaha@qq.com";
-    
-}
 @end

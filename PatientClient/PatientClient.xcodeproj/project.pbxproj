@@ -11,6 +11,10 @@
 		6E509AF119F602110067A734 /* ResumeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E509AF019F602110067A734 /* ResumeController.m */; };
 		6E7A6C4B19F29F7F00D0F4D5 /* PCMainModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A6C4A19F29F7F00D0F4D5 /* PCMainModel.m */; };
 		6E7A6C5119F2B1AA00D0F4D5 /* DrawerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A6C5019F2B1AA00D0F4D5 /* DrawerViewController.m */; };
+		6EAFDABC19FA8A9A00F69E9D /* ChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAFDAB919FA8A9A00F69E9D /* ChatCell.m */; };
+		6EAFDABD19FA8A9A00F69E9D /* ChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAFDABB19FA8A9A00F69E9D /* ChatController.m */; };
+		6EAFDAC019FA8AB100F69E9D /* DialogController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAFDABF19FA8AB100F69E9D /* DialogController.m */; };
+		6EAFDAC319FA8AE400F69E9D /* NSString+duan.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAFDAC219FA8AE400F69E9D /* NSString+duan.m */; };
 		6EB34A4319F20633002C5F8D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB34A4219F20633002C5F8D /* main.m */; };
 		6EB34A4619F20633002C5F8D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB34A4519F20633002C5F8D /* AppDelegate.m */; };
 		6EB34A4919F20633002C5F8D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB34A4819F20633002C5F8D /* ViewController.m */; };
@@ -101,6 +105,14 @@
 		6E7A6C4A19F29F7F00D0F4D5 /* PCMainModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCMainModel.m; sourceTree = "<group>"; };
 		6E7A6C4F19F2B1AA00D0F4D5 /* DrawerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawerViewController.h; sourceTree = "<group>"; };
 		6E7A6C5019F2B1AA00D0F4D5 /* DrawerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawerViewController.m; sourceTree = "<group>"; };
+		6EAFDAB819FA8A9A00F69E9D /* ChatCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatCell.h; sourceTree = "<group>"; };
+		6EAFDAB919FA8A9A00F69E9D /* ChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatCell.m; sourceTree = "<group>"; };
+		6EAFDABA19FA8A9A00F69E9D /* ChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatController.h; sourceTree = "<group>"; };
+		6EAFDABB19FA8A9A00F69E9D /* ChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatController.m; sourceTree = "<group>"; };
+		6EAFDABE19FA8AB100F69E9D /* DialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogController.h; sourceTree = "<group>"; };
+		6EAFDABF19FA8AB100F69E9D /* DialogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DialogController.m; sourceTree = "<group>"; };
+		6EAFDAC119FA8AE400F69E9D /* NSString+duan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+duan.h"; sourceTree = "<group>"; };
+		6EAFDAC219FA8AE400F69E9D /* NSString+duan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+duan.m"; sourceTree = "<group>"; };
 		6EB34A3D19F20633002C5F8D /* PatientClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PatientClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB34A4119F20633002C5F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6EB34A4219F20633002C5F8D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -209,6 +221,8 @@
 		6E41030A19F20CC7002F6ECE /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				6EAFDAC119FA8AE400F69E9D /* NSString+duan.h */,
+				6EAFDAC219FA8AE400F69E9D /* NSString+duan.m */,
 				A725108B19FA110D000D2A2E /* Account.h */,
 				A725108C19FA110D000D2A2E /* Account.m */,
 				A725108D19FA110D000D2A2E /* AccountTool.h */,
@@ -421,6 +435,12 @@
 		6EB6856A19F741F90041D5C8 /* 5_StartChatController */ = {
 			isa = PBXGroup;
 			children = (
+				6EAFDABE19FA8AB100F69E9D /* DialogController.h */,
+				6EAFDABF19FA8AB100F69E9D /* DialogController.m */,
+				6EAFDAB819FA8A9A00F69E9D /* ChatCell.h */,
+				6EAFDAB919FA8A9A00F69E9D /* ChatCell.m */,
+				6EAFDABA19FA8A9A00F69E9D /* ChatController.h */,
+				6EAFDABB19FA8A9A00F69E9D /* ChatController.m */,
 				6EB6856B19F745450041D5C8 /* StartChatController.h */,
 				6EB6856C19F745450041D5C8 /* StartChatController.m */,
 				6EB3511619F7A958002E16AF /* startCell.h */,
@@ -639,6 +659,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A725108A19FA1091000D2A2E /* AFNetworkActivityIndicatorManager.m in Sources */,
+				6EAFDABC19FA8A9A00F69E9D /* ChatCell.m in Sources */,
 				A725108819FA1065000D2A2E /* ResumeCell.m in Sources */,
 				A725108919FA1065000D2A2E /* LastChat.m in Sources */,
 				A725108719FA1051000D2A2E /* AFHTTPRequestOperation.m in Sources */,
@@ -648,6 +669,9 @@
 				A725108419FA0907000D2A2E /* PCAPIClient.m in Sources */,
 				6EB4E8F819F3AB0300262FBF /* HomeController.m in Sources */,
 				A725108F19FA110D000D2A2E /* Account.m in Sources */,
+				6EAFDAC019FA8AB100F69E9D /* DialogController.m in Sources */,
+				6EAFDABD19FA8A9A00F69E9D /* ChatController.m in Sources */,
+				6EAFDAC319FA8AE400F69E9D /* NSString+duan.m in Sources */,
 				A725109019FA110D000D2A2E /* AccountTool.m in Sources */,
 				6EB3511819F7A958002E16AF /* startCell.m in Sources */,
 				6EB6856D19F745450041D5C8 /* StartChatController.m in Sources */,

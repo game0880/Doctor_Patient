@@ -9,10 +9,12 @@
 #import "StartChatController.h"
 #import "PersonCenterController.h"
 #import "startCell.h"
+#import "DialogController.h"
 
 @interface StartChatController () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong) NSMutableArray *array;
 
 @end
 
@@ -24,7 +26,7 @@
         // 创建基本界面
         [self initUI];
         
-
+        [self addData];
         
     }
     return self;
@@ -36,7 +38,7 @@
     self.title = @"New Chat";
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     // 设置滚动size
-    self.scrollView.contentSize = CGSizeMake(0, 1000);
+    self.scrollView.contentSize = CGSizeMake(0, [UIScreen mainScreen].bounds.size.height + 1);
     [self.view addSubview:self.scrollView];
     
     // 左边按钮
@@ -70,6 +72,13 @@
 
 }
 
+- (void)addData
+{
+    // 初始化数组
+    NSArray *Arr = @[@{@"doctName":@"Doctor A",@"subjects":@"风湿内科",@"status":@"off"},@{@"doctName":@"Doctor B",@"subjects":@"关节炎",@"status":@"on"},@{@"doctName":@"Doctor C",@"subjects":@"眼科",@"status":@"on"},@{@"doctName":@"Doctor D",@"subjects":@"骨科",@"status":@"off"}];
+    _array = [NSMutableArray arrayWithArray:Arr];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -91,18 +100,24 @@
     startCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentical];
     if (!cell) {
         cell = [[startCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellIdentical];
-        cell.myTableView = self.tableView;
+        cell.dataArray = self.array;
     }
     cell.indexPath = indexPath;
-    cell.doctorName.text = @"Dr.Duan";
-    cell.subject.text = @"内风湿外科医生";
-    cell.statesView.image = [UIImage imageNamed:@"switch_on.png"];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 44;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DialogController *dialog = [[DialogController alloc] init];
+    startCell *start = (startCell *)[tableView cellForRowAtIndexPath:indexPath];
+    dialog.doctorContentLabel.text = start.doctorName.text;
+    dialog.subjectContentLabel.text = start.subject.text;
+    [self.navigationController pushViewController:dialog animated:YES];
 }
 /*
 #pragma mark - Navigation
