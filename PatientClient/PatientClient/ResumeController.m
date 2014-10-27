@@ -13,6 +13,7 @@
 @interface ResumeController ()
 
 @property (nonatomic,assign) BOOL canEdit;  // 是否能修改状态
+@property (nonatomic,strong) NSMutableArray *dataArray;
 
 @end
 
@@ -22,6 +23,7 @@
 {
     if (self = [super initWithStyle:style]) {
         [self initUI];
+        [self addData];
         self.canEdit = NO;
     }
     return self;
@@ -43,15 +45,23 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
     
     // 右边按钮
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(rightButton)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(rightButton)];
 
     self.tableView.userInteractionEnabled = YES;
+}
+
+- (void)addData
+{
+    // 初始化数组
+    NSArray *Arr = @[@{@"doctor":@"Doctor A",@"subject":@"hello！！！",@"time":@"2014-10-01"},@{@"doctor":@"Doctor B",@"subject":@"wo hjkkkjhk",@"time":@"2014-10-02"},@{@"doctor":@"Doctor c",@"subject":@"wo hjkkkjhk",@"time":@"2014-10-02"},@{@"doctor":@"Doctor d",@"subject":@"wo hjkkkjhk",@"time":@"2014-10-02"}];
+    self.dataArray = [NSMutableArray arrayWithArray:Arr];
 }
 
 #pragma mark edit按钮
 - (void)rightButton
 {
     self.canEdit = !_canEdit;
+    [self.tableView setEditing:self.canEdit animated:YES];
     
     // 更改edit按钮样式
     if (self.canEdit == YES) {
@@ -61,9 +71,10 @@
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(rightButton)];
     }
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
@@ -77,7 +88,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 2;
+    return self.dataArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -87,8 +98,9 @@
     if (!cell) {
         cell = [[ResumeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentical];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.resumeArray = self.dataArray;
     }
-    
+    cell.indexPath = indexPath;
     cell.accessoryView.hidden = self.canEdit;
     
     return cell;
@@ -106,69 +118,24 @@
     [self.navigationController pushViewController:lastChat animated:YES];
 }
 
-//单元格返回的编辑风格，包括删除 添加 和 默认  和不可编辑三种风格
--(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle==UITableViewCellEditingStyleDelete) {
-//        //        获取选中删除行索引值
-//        NSInteger row = [indexPath row];
-//        NSLog(@"row:%d",(int)row);
-//        //        通过获取的索引值删除数组中的值
-////        [self.listData removeObjectAtIndex:row];
-//        //        删除单元格的某一行时，在用动画效果实现删除过程
-//        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
-
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-
-
-// Override to support editing the table view.
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        // Delete the row from the data source
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//        
-//        
-////    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//    }   
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return self.canEdit;
 //}
 
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+#pragma mark 当用户提交了一个编辑操作就会调用（比如点击了“删除”按钮）
+// 只要实现了这个方法，就会默认添加滑动删除功能
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // 如果不是删除操作，直接返回
+    if (editingStyle != UITableViewCellEditingStyleDelete) return;
+    
+    // 1.删除模型数据
+    [self.dataArray removeObjectAtIndex:indexPath.row];
+    
+    // 2.刷新表格
+    //    [tableView reloadData];
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
 }
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

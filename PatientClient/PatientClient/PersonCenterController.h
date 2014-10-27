@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "User.h"
 
-@interface PersonCenterController : UIViewController
+@interface PersonCenterController : UIViewController 
 
 @property (nonatomic, strong) UIButton *leftItem;
 @property (nonatomic,strong) User *user;

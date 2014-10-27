@@ -20,7 +20,7 @@ static NSString * const kPCAPIBaseUrlString = @"http://192.168.1.79:8080/StoryBo
 //static NSString * const kDCAPIBaseUrlString = @"http://192.168.2.4:8001/";
 
 
-
+// http://192.168.1.79:8080/StoryBookServer2.0/login!login?userVo.userName=admin&userVo.passWord=123456&userVo.userType=2
 
 //static NSString * const kDCAPIBaseUrlString = @"http://192.168.1.132:9000/";
 

@@ -10,6 +10,7 @@
 #import "PCMainController.h"
 #import "AccountTool.h"
 #import "PCAPIClient.h"
+#import "User.h"
 
 @interface LoginController () <UITextFieldDelegate>
 @property (nonatomic,strong) UILabel *idLabel;  //账号label
@@ -88,29 +89,35 @@
 #pragma mark 监听Login
 - (void)Login
 {
-    Account *account = [[Account alloc] init];
-    account.accountName = self.idTextField.text;
-    account.password = self.passwordTextField.text;
-    [[AccountTool sharedAccountTool] saveAccount:account];
-    
     // 账户登录
-    [PCAPIClient userAuth:@"login!login" parameters:@{@"userName":self.idTextField.text,@"passWord":self.passwordTextField.text} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [PCAPIClient userAuth:@"login!login" parameters:@{@"userVo.userName":self.idTextField.text,@"userVo.passWord":self.passwordTextField.text,@"userVo.userType":@"2"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // 判断账户是否正确
-        if ([responseObject[@"loginInfo"] isEqualToString:@"loginError! "]) {
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:@"Account Name or Password is wrong " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-            [alert show];
+        if ([responseObject[@"loginInfo"] isEqualToString:@"patientLoginSuccess"]) {
+           
+            // 设置cookie
+            [[PCAPIClient sharedAPIClient] setAccessToken:responseObject[@"userInfo"]];
+            
+            // 存储账号密码
+            Account *account = [[Account alloc] init];
+            account.accountName = self.idTextField.text;
+            account.password = self.passwordTextField.text;
+            [[AccountTool sharedAccountTool] saveAccount:account];
+            
+            NSLog(@"success!!!");
+            
+            self.view.window.rootViewController = [PCMainController shareMainViewController];
+            
         }
         else
         {
-            NSLog(@"success!!!");
-            NSLog(@"%@",responseObject);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:@"Account Name or Password is wrong " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            [alert show];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
        
         NSLog(@"failure!!!!");
     }];
     
-    self.view.window.rootViewController = [PCMainController shareMainViewController];
 }
 
 
