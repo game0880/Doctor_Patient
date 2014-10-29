@@ -8,8 +8,8 @@
 
 #import "AppDelegate.h"
 #import "PCMainController.h"
-#import "AccountTool.h"
 #import "LoginController.h"
+#import "AccountTool.h"
 
 @interface AppDelegate ()
 
@@ -23,6 +23,7 @@
     self.window = [[UIWindow alloc] initWithFrame:windowBounds];
     
     if ([AccountTool sharedAccountTool].account) {
+        [AccountTool sharedAccountTool].account.accountName;
         self.window.rootViewController = [PCMainController shareMainViewController];
     }
     else

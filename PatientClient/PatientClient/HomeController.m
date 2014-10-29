@@ -10,6 +10,7 @@
 #import "ResumeController.h"
 #import "StartChatController.h"
 #import "NSString+duan.h"
+#import "PCAPIClient.h"
 
 #define kLabelHeight 44     
 #define kCellHeight 60
@@ -145,6 +146,7 @@
     NSLog(@"左边按钮");
 }
 
+#pragma mark 消息信息
 - (void)homeRightButton
 {
     NSLog(@"右边按钮");

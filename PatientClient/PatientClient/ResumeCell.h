@@ -17,5 +17,7 @@
 @property (nonatomic,strong) UILabel *topicContentLabel;        // 主题内容
 @property (nonatomic,strong) UILabel *tipsLabel;        // 建议
 @property (nonatomic,strong) UILabel *timeLabel;    // 时间
+@property (nonatomic,strong) NSMutableArray *resumeArray;
+@property (nonatomic,strong) NSIndexPath *indexPath;
 
 @end

@@ -39,7 +39,6 @@
     UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(115, 5, 120, 18)];
     [label2 setFont:[UIFont systemFontOfSize:15]];
     label2.numberOfLines = 0;
-    label2.text = @"zhangsan";
     [self.contentView addSubview:label2];
     self.doctorNameLabel = label2;
     
@@ -53,7 +52,6 @@
     UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(115, 25, 120, 18)];
     [label4 setFont:[UIFont systemFontOfSize:15]];
     label4.numberOfLines = 0;
-    label4.text = @"内风湿关节外科";
     [self.contentView addSubview:label4];
     self.topicContentLabel = label4;
     
@@ -62,11 +60,17 @@
     label5.numberOfLines = 0;
     label5.textAlignment = NSTextAlignmentCenter;
     [label5 setTextColor:[UIColor grayColor]];
-    label5.text = @"2014-10-01";
     [self.contentView addSubview:label5];
-    self.topicContentLabel = label5;
+    self.timeLabel = label5;
     
-    
+}
+ //   NSArray *Arr = @[@{@"doctor":@"Doctor A",@"subject":@"hello！！！",@"time":@"2014-10-01"},@{@"doctor":@"Doctor B",@"subject":@"wo cao！！！",@"time":@"2014-10-02"}];
+- (void)setIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *dict = self.resumeArray[indexPath.row];
+    self.doctorNameLabel.text = dict[@"doctor"];
+    self.topicContentLabel.text = dict[@"subject"];
+    self.timeLabel.text = dict[@"time"];
 }
 
 - (void)awakeFromNib {

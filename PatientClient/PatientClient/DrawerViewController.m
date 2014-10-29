@@ -213,22 +213,26 @@
         frame.origin.x = 0;
     }
     // 2.重新赋值frame
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5f];
-    self.currentView.frame = frame;
-    if (frame.origin.x == 0) {
-        [self changeViewFrameAndAlpha:frame isLeft:isLeft];
-    } else
-    {
-        if (isLeft)
-        {
-            self.leftView.frame = CGRectMake(0, 0, _leftWidth, _leftHeight);
+    
+    
+    __block DrawerViewController *blockself = self;
+    [UIView animateWithDuration:0.5 delay:0.0f usingSpringWithDamping:1.0f initialSpringVelocity:0.0f options:UIViewAnimationOptionLayoutSubviews animations:^{
+        blockself.currentView.frame = frame;
+        if (frame.origin.x == 0) {
+            [blockself changeViewFrameAndAlpha:frame isLeft:isLeft];
         } else
         {
-//            self.rightView.frame = CGRectMake(_rightOrighX, 0, _rightWidth, _rightHeight);
+            if (isLeft)
+            {
+                blockself.leftView.frame = CGRectMake(0, 0, _leftWidth, _leftHeight);
+            } else
+            {
+                //            self.rightView.frame = CGRectMake(_rightOrighX, 0, _rightWidth, _rightHeight);
+            }
         }
-    }
-    [UIView commitAnimations];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 #pragma mark 点击左边的item按钮

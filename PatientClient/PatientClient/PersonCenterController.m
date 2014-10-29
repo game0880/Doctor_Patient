@@ -8,27 +8,30 @@
 
 #import "PersonCenterController.h"
 #import "UserCell.h"
+#import "PCAPIClient.h"
 
 #define kPropertyCount 9
 #define kCellHeight 40
 #define kGap 13
 
-@interface PersonCenterController () <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+@interface PersonCenterController () <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 
 @property (nonatomic,strong) UILabel *userNameLabel;
-@property (nonatomic,strong) UILabel *userRealNameLabel;
+//@property (nonatomic,strong) UILabel *userRealNameLabel;
 @property (nonatomic,strong) UITextField *ageTextField;
 @property (nonatomic,strong) UITextField *sexTextField;
-@property (nonatomic,strong) UILabel *birthPlaceLabel;
-@property (nonatomic,strong) UILabel *userAddressLabel;
+//@property (nonatomic,strong) UILabel *birthPlaceLabel;
+//@property (nonatomic,strong) UILabel *userAddressLabel;
 @property (nonatomic,strong) UIButton *photoPathBtn;  //用户头像
-@property (nonatomic,strong) UILabel *userTelLabel;
+//@property (nonatomic,strong) UILabel *userTelLabel;
 
 @property (nonatomic,strong) UIView *firstView; //包含头像、用户名、性别、年龄
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *personArray;
 @property (nonatomic,strong) NSMutableArray *titleArray;
 @property (nonatomic,strong) NSMutableDictionary *userDict;
+@property (nonatomic,strong) NSMutableDictionary *ohterDict;
+
 
 
 @property (nonatomic,assign) BOOL canEdit;  // 是否能修改状态
@@ -41,13 +44,9 @@
     if (self = [super init]) {
         [self initNavigationUI];
         [self addSubviews];
-        
-        self.user = [User shareUser];
-        // 设置假数据
-//        [self.user setUserData:nil];
-        
+
         // 创建用户基本信息界面
-        [self initUserUI];
+//        [self initUserUI];
     }
     return self;
 }
@@ -56,10 +55,7 @@
 {
     // 标题
     self.title = @"Person Center";
-    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    // 设置滚动size
-    self.scrollView.contentSize = CGSizeMake(0, [UIScreen mainScreen].bounds.size.height);
-    [self.view addSubview:self.scrollView];
+
     
     // 左边按钮
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -77,21 +73,26 @@
     self.navigationItem.rightBarButtonItem = barBtnItem;
     //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(personCenterRightButton)];
 
-    [self.scrollView setBackgroundColor:[UIColor whiteColor]];
    
 }
 
 - (void)addSubviews
 {
+    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    // 设置滚动size
+    self.scrollView.contentSize = CGSizeMake(0, self.scrollView.frame.size.height +0.5);
+    [self.view addSubview:self.scrollView];
+    
+    [self.scrollView setBackgroundColor:[UIColor whiteColor]];
     
     // 确定view
     UIView *v1 = [[UIView alloc] initWithFrame:CGRectMake(kGap, 0, [UIScreen mainScreen].bounds.size.width - 2 * kGap, 120)];
-    //    [v1 setBackgroundColor:[UIColor redColor]];
+//    [v1 setBackgroundColor:[UIColor redColor]];
     self.firstView = v1;
     [self.scrollView addSubview:v1];
     
     // 确定tableView
-    UITableView *tabView = [[UITableView alloc] initWithFrame:CGRectMake(kGap, 100, [UIScreen mainScreen].bounds.size.width - 2 * kGap, [UIScreen mainScreen].bounds.size.height - 120)];
+    UITableView *tabView = [[UITableView alloc] initWithFrame:CGRectMake(kGap, CGRectGetMaxY(self.firstView.frame) +2, [UIScreen mainScreen].bounds.size.width - 2 * kGap, [UIScreen mainScreen].bounds.size.height - 120)];
     
     tabView.delegate = self;
     tabView.dataSource = self;
@@ -110,27 +111,7 @@
     [outBtn addTarget:self action:@selector(SignOut) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:outBtn];
     self.tableView.tableFooterView = outBtn;
-}
-
-- (void)SignOut
-{
-    NSLog(@"sign out!!!");
-}
-
-- (void)initUserUI
-{
-    // 初始化字典
-    NSDictionary *dict = @{@"userId":@"00001",@"age":@"22",@"address":@"中南大学铁道学院",@"Birth Place":@"湖南长沙",@"age":@"22",@"icon":@"ditu_ic.png",@"sex":@"男",@"user":@"Doctor A",@"content":@"hello！！！"};
-    self.userDict = [NSMutableDictionary dictionaryWithDictionary:dict];
-    [self.userDict removeObjectForKey:@"userId"];
-    [self.userDict removeObjectForKey:@"age"];
-    [self.userDict removeObjectForKey:@"icon"];
-    [self.userDict removeObjectForKey:@"sex"];
-
     
-    self.personArray = [NSMutableArray arrayWithArray:self.userDict.allValues];
-    self.titleArray = [NSMutableArray arrayWithArray:self.userDict.allKeys];
-
     // 设置头像
     UIButton *imageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     imageBtn.frame = CGRectMake(kGap, kGap, 80, 80);
@@ -138,7 +119,7 @@
     [imageBtn.layer setMasksToBounds:YES];
     [imageBtn.layer setCornerRadius:40];
     
-    [imageBtn setBackgroundImage:[UIImage imageNamed:dict[@"icon"]] forState:UIControlStateNormal];
+    [imageBtn setBackgroundImage:[UIImage imageNamed:self.userDict[@"patientPhoto"]] forState:UIControlStateNormal];
     [imageBtn addTarget:self action:@selector(changeIcon) forControlEvents:UIControlEventTouchUpInside];
     [self.firstView addSubview:imageBtn];
     
@@ -146,61 +127,83 @@
     
     // 设置用户名
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(120, kGap, 100,kCellHeight)];
-    label1.text = dict[@"userId"];
+    label1.text = self.userDict[@"patientId"];
     [label1 setFont:[UIFont systemFontOfSize:20]];
     label1.textAlignment = NSTextAlignmentLeft;
     [self.firstView addSubview:label1];
     self.userNameLabel = label1;
     
-    // 设置年龄
-    UITextField *f1 = [[UITextField alloc] initWithFrame:CGRectMake(160, kGap + 40, 40,kCellHeight)];
-    f1.text = [NSString stringWithFormat:@"%@岁",dict[@"age"]];
-    [f1 setFont:[UIFont systemFontOfSize:17]];
-    f1.enabled = _canEdit;
-    [self.firstView addSubview:f1];
-    self.ageTextField = f1;
+    //    // 设置年龄
+    //    UITextField *f1 = [[UITextField alloc] initWithFrame:CGRectMake(160, kGap + 40, 40,kCellHeight)];
+    //    f1.text = [NSString stringWithFormat:@"%@",dict[@"age"]];
+    //    [f1 setFont:[UIFont systemFontOfSize:17]];
+    //    f1.enabled = _canEdit;
+    //    [self.firstView addSubview:f1];
+    //    self.ageTextField = f1;
     
     // 设置性别
     UITextField *f2 = [[UITextField alloc] initWithFrame:CGRectMake(120, kGap + 40, 80,kCellHeight)];
-    f2.text = dict[@"sex"];
+    f2.text = @"famle";
     [f2 setFont:[UIFont systemFontOfSize:17]];
-    f2.enabled = _canEdit;
+    f2.enabled = NO;
     [self.firstView addSubview:f2];
     self.sexTextField = f2;
     
-//    // 将user内容加载到array中
-//    [self addUserData];
-
 }
 
-//- (void)addUserData
-//{
-//    _personArray = [NSMutableArray array];
-//    NSString *s1 = [NSString stringWithFormat:@"%@",self.user.userRealName];
-//    NSString *s2 = [NSString stringWithFormat:@"%@",self.user.birthPlace];
-//    NSString *s3 = [NSString stringWithFormat:@"%@",self.user.userAddress];
-//    NSString *s4 = [NSString stringWithFormat:@"%@",self.user.userTel];
-//    NSString *s5 = [NSString stringWithFormat:@"%@",self.user.userEmail];
-//
-//    [_personArray addObject:s1];
-//    [_personArray addObject:s2];
-//    [_personArray addObject:s3];
-//    [_personArray addObject:s4];
-//    [_personArray addObject:s5];
-//    
-//    _titleArray = [NSMutableArray array];
-//    [_titleArray addObject:@"Name :"];
-//    [_titleArray addObject:@"Birth Place : "];
-//    [_titleArray addObject:@"Address : "];
-//    [_titleArray addObject:@"Telephone : "];
-//    [_titleArray addObject:@"E-mail : "];
-//
-//}
+- (void)SignOut
+{
+    NSLog(@"sign out!!!");
+}
 
+#pragma mark 设置titleArray数据
+- (void)initTitleArray
+{
+    self.titleArray = [NSMutableArray array];
+    [self.titleArray addObject:@"Name"];
+    [self.titleArray addObject:@"Birth"];
+    [self.titleArray addObject:@"Telephone"];
+    [self.titleArray addObject:@"Email"];
+    [self.titleArray addObject:@"Address"];
+}
+
+#pragma mark 监听修改用户头像
 - (void)changeIcon
 {
-    for (int i = 0; i < self.personArray.count; i++) {
-        NSLog(@"%d -- %@",i,self.personArray[i]);
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Change Image" delegate:self
+ cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"From Album",@"Take Photo",nil];
+    sheet.delegate = self;
+    [sheet showInView:self.view];
+
+}
+#pragma mark pickController delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+    [self.photoPathBtn setBackgroundImage:image forState:UIControlStateNormal];
+}
+
+#pragma mark actionsheet delegate method
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // 从本地相册调取图片
+    if (buttonIndex == 0) {
+        UIImagePickerController *pickController = [[UIImagePickerController alloc] init];
+        pickController.delegate = self;
+        pickController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        pickController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        pickController.allowsEditing = YES;
+        [self presentViewController:pickController animated:YES completion:^{
+            
+        }];
+    }
+    // 拍照
+    if (buttonIndex == 1) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sorry" message:@"We don't do it" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"OK", nil];
+        [alert show];
     }
 }
 
@@ -223,9 +226,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    NSLog(@"%@",self.userDict);
     
-//    [self.user setUserData];
+    [self initUserUI];
+    NSLog(@"-------------------------");
+    for (int i = 0; i<self.titleArray.count; i++) {
+        NSLog(@"%@",self.titleArray[i]);
+    }
 }
+
+- (void)initUserUI
+{
+    __block PersonCenterController *blockself = self;
+    // 获取个人信息
+    [[PCAPIClient sharedAPIClient] getPath:@"patient!queryByUserId"parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"-----成功！！");
+        
+        blockself.userDict = [NSMutableDictionary dictionaryWithDictionary:responseObject[@"patientInfo"]];
+        blockself.personArray = [NSMutableArray arrayWithObjects:blockself.userDict[@"patientName"],blockself.userDict[@"patientBirth"],blockself.userDict[@"patientTel"],blockself.userDict[@"patientEmail"],blockself.userDict[@"patientAddress"],nil];
+        
+        // 初始化titleArray
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [blockself initTitleArray];
+            blockself.sexTextField.text = [blockself.userDict objectForKey:@"patientSex"];
+            blockself.userNameLabel.text = [blockself.userDict objectForKey:@"patientId"];
+            blockself.photoPathBtn.imageView.image = [UIImage imageNamed:[blockself.userDict objectForKey:@"patientId"]];
+        });
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"-----失败！！");
+    }];
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -235,12 +269,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.userDict.count;
+    
+    return self.personArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%d",(int)self.userDict.count);
 
     static NSString *cellIdentical = @"personCell";
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentical];
@@ -272,15 +306,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *str = self.personArray[indexPath.row];
-    CGSize siz = [NSString getSizeFromText:str ForFont:[UIFont systemFontOfSize:15] MaxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 110 - 30, MAXFLOAT)];
-    if (siz.height + 15 <= 44) {
-        return 44;
-    }
-    else
-    {
-        return siz.height + 15;
-    }
+//    NSString *str = self.personArray[indexPath.row];
+//    CGSize siz = [NSString getSizeFromText:str ForFont:[UIFont systemFontOfSize:15] MaxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 110 - 30, MAXFLOAT)];
+//    if (siz.height + 15 <= 44) {
+//        return 44;
+//    }
+//    else
+//    {
+//        return siz.height + 15;
+//    }
+    
+    return 44;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
